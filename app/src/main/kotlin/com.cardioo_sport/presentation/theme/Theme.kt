@@ -5,13 +5,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 private val LightScheme = lightColorScheme(
-    primary = PinkPrimary,
+    primary = GreenPrimary,
     onPrimary = White,
-    primaryContainer = PinkContainer,
+    primaryContainer = GreenContainer,
     onPrimaryContainer = Black,
-    secondary = PinkAccent,
+    secondary = GreenAccent,
     onSecondary = Black,
     background = White,
     onBackground = Black,
@@ -20,11 +21,11 @@ private val LightScheme = lightColorScheme(
 )
 
 private val DarkScheme = darkColorScheme(
-    primary = PinkAccent,
+    primary = GreenAccent,
     onPrimary = Black,
     primaryContainer = ColorTokens.DarkSurface,
     onPrimaryContainer = White,
-    secondary = PinkPrimary,
+    secondary = GreenPrimary,
     onSecondary = Black,
     background = ColorTokens.DarkBackground,
     onBackground = White,
@@ -45,7 +46,7 @@ fun CardiooSportTheme(
 }
 
 private object ColorTokens {
-    val DarkBackground = androidx.compose.ui.graphics.Color(0xFF0F0F10)
-    val DarkSurface = androidx.compose.ui.graphics.Color(0xFF17171A)
+    val DarkBackground = Color(0xFF0F0F10)
+    val DarkSurface = Color(0xFF17171A)
 }
 
