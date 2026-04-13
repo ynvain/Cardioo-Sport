@@ -48,6 +48,7 @@
     <string name="label_noon_walk_steps">Noon walk</string>
     <string name="label_running_distance">Running Distance</string>
     <string name="label_cycling_distance">Cycling Distance</string>
+    <string name="label_stretching">Stretching</string>
     <string name="cd_toggle_weight_unit">Toggle weight unit</string>
     <string name="bp_category_format">BP category: </string>
     <string name="bmi_format">BMI: %1$d</string>
@@ -96,7 +97,7 @@
     <string name="csv_header" translatable="false">timestamp,systolic,diastolic,pulse,weight,weightUnit,notes\n</string>
     <string name="csv_default_filename" translatable="false">cardioo_readings.csv</string>
     <string name="error_reading_not_found">Reading not found.</string>
-    <string name="error_enter_systolic">Enter systolic (50–250).</string>
+    <string name="error_enter_any_params">Enter at least one category</string>
     <string name="error_enter_diastolic">Enter diastolic (30–150).</string>
     <string name="error_systolic_range">Systolic must be 50–250.</string>
     <string name="error_diastolic_range">Diastolic must be 30–150.</string>

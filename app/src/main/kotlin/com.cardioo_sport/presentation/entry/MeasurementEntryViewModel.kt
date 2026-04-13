@@ -82,7 +82,7 @@ class MeasurementEntryViewModel @Inject constructor(
                     noonStepsText = m.noonSteps?.toString().orEmpty(),
                     runningDistanceText = m.runningDistance?.toString().orEmpty(),
                     cyclingDistanceText = m.cyclingDistance?.toString().orEmpty(),
-
+                    stretching = m.stretching,
                     notes = m.notes.orEmpty(),
                 )
             }
@@ -121,29 +121,9 @@ class MeasurementEntryViewModel @Inject constructor(
 
 
     fun validate(): Int? {
+        if (_state.value.morningSteps == null && _state.value.noonSteps == null && _state.value.runningDistance == null &&
+            _state.value.cyclingDistance == null && !_state.value.stretching) return R.string.error_enter_any_params
         return null
-        /*
-        val s = _state.value.morningSteps ?: return R.string.error_enter_systolic
-        val d = _state.value.noonSteps ?: return R.string.error_enter_diastolic
-
-        if (s !in 50..250) return R.string.error_systolic_range
-        if (d !in 30..150) return R.string.error_diastolic_range
-
-        val pulseText = _state.value.runningDistanceText.trim()
-        if (pulseText.isNotEmpty()) {
-            _state.value.runningDistance?.let { if (it !in 40..200) return R.string.error_pulse_range }
-
-        }
-
-        val weightText = _state.value.cyclingDistanceText.trim()
-        if (weightText.isNotEmpty()) {
-            val w = _state.value.cyclingDistance ?: return R.string.error_weight_invalid
-            if (w <= 0.0) return R.string.error_weight_positive
-            val wKg = if (_state.value.weightUnit == WeightUnit.KG) w else poundsToKg(w)
-            if (wKg !in 20.0..300.0) return R.string.error_weight_unrealistic
-        }
-
-        return null*/
     }
 
     fun save(onDone: () -> Unit) {
