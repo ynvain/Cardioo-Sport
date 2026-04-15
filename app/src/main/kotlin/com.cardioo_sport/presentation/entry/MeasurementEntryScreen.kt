@@ -3,7 +3,6 @@ package com.cardioo_sport.presentation.entry
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,7 +37,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
@@ -49,8 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.presentation.util.formatLocalizedDate
 import com.cardioo_sport.presentation.util.formatLocalizedTime
-import com.cardioo_sport.presentation.util.intensityColor
-import com.cardioo_sport.presentation.util.weightUnitString
+import com.cardioo_sport.presentation.util.scoreColor
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +75,7 @@ fun MeasurementEntryScreen(
         remember(state.timestampEpochMillis) { formatLocalizedDate(state.timestampEpochMillis) }
     val timePart =
         remember(state.timestampEpochMillis) { formatLocalizedTime(state.timestampEpochMillis) }
-    val exerciseIntensity = vm.computedExerciseIntensity()
+    val exerciseScore = vm.computedExerciseScore()
     Scaffold(
         topBar = {
             TopAppBar(
@@ -147,7 +144,7 @@ fun MeasurementEntryScreen(
                 Box(
                     modifier = Modifier
                         .size(18.dp)
-                        .background(intensityColor(exerciseIntensity), shape = CircleShape),
+                        .background(scoreColor(exerciseScore), shape = CircleShape),
                 )
             }
 

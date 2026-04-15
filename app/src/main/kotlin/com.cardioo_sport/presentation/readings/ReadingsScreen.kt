@@ -44,12 +44,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.SportMeasurement
-import com.cardioo_sport.domain.model.exerciseIntensity
+import com.cardioo_sport.domain.model.exerciseScore
 import com.cardioo_sport.presentation.util.formatLocalizedDateWithoutYear
 import com.cardioo_sport.presentation.util.formatLocalizedDayOfWeek
 import com.cardioo_sport.presentation.util.formatLocalizedTime
 import com.cardioo_sport.presentation.util.getYear
-import com.cardioo_sport.presentation.util.intensityColor
+import com.cardioo_sport.presentation.util.scoreColor
 import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -169,7 +169,7 @@ private fun MeasurementCard(
     onToggleSelect: () -> Unit,
     onLongPressSelect: () -> Unit,
 ) {
-    val exerciseIntensity = exerciseIntensity(measurement)
+    val exerciseScore = exerciseScore(measurement)
     val currentYear = ZonedDateTime.now().year
     val year = getYear(measurement.timestampEpochMillis)
     val shape = RoundedCornerShape(12.dp)
@@ -234,7 +234,7 @@ private fun MeasurementCard(
 
             }
             Divider(
-                color = intensityColor(exerciseIntensity),
+                color = scoreColor(exerciseScore),
                 modifier = Modifier
                     .height(50.dp)
                     .width(3.5.dp)

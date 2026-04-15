@@ -6,7 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.cardioo_sport.domain.model.ExerciseIntensity
+import com.cardioo_sport.domain.model.ExerciseScore
 
 
 val Orange = Color(0xFFFFA726);
@@ -20,11 +20,11 @@ fun toggleButtonBorder(toggle: Boolean): BorderStroke {
 }
 
 
-fun intensityColor(category: ExerciseIntensity): Color {
+fun scoreColor(category: ExerciseScore): Color {
     return when (category) {
-        ExerciseIntensity.Low -> Orange
-        ExerciseIntensity.Medium -> Color(0xFFBEDC39)
-        ExerciseIntensity.High -> Color(0xFF009650)
-        ExerciseIntensity.None -> Color.White
+        ExerciseScore.Low -> Orange
+        ExerciseScore.Medium -> Color(0xFFBEDC39)
+        ExerciseScore.High -> Color(0xFF009650)
+        ExerciseScore.None -> Color.White
     }
 }

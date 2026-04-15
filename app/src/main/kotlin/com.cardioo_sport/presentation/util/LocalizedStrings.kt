@@ -3,7 +3,6 @@ package com.cardioo_sport.presentation.util
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.cardioo_sport.R
-import com.cardioo_sport.domain.model.ExerciseIntensity
 import com.cardioo_sport.domain.model.Gender
 import com.cardioo_sport.domain.model.HeightUnit
 import com.cardioo_sport.domain.model.WeightUnit

@@ -3,10 +3,10 @@ package com.cardioo_sport.presentation.entry
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cardioo_sport.R
-import com.cardioo_sport.domain.model.ExerciseIntensity
+import com.cardioo_sport.domain.model.ExerciseScore
 import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.domain.model.UserProfile
-import com.cardioo_sport.domain.model.exerciseIntensity
+import com.cardioo_sport.domain.model.exerciseScore
 import com.cardioo_sport.domain.usecase.GetMeasurement
 import com.cardioo_sport.domain.usecase.ObserveProfile
 import com.cardioo_sport.domain.usecase.UpsertMeasurement
@@ -109,8 +109,8 @@ class MeasurementEntryViewModel @Inject constructor(
 
     fun setNotes(v: String) = _state.update { it.copy(notes = v) }
 
-    fun computedExerciseIntensity(): ExerciseIntensity {
-        return exerciseIntensity(
+    fun computedExerciseScore(): ExerciseScore {
+        return exerciseScore(
             _state.value.morningSteps,
             _state.value.noonSteps,
             _state.value.runningDistance,
