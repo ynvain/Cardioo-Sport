@@ -50,6 +50,7 @@ import com.cardioo_sport.presentation.util.formatLocalizedDayOfWeek
 import com.cardioo_sport.presentation.util.formatLocalizedTime
 import com.cardioo_sport.presentation.util.getYear
 import com.cardioo_sport.presentation.util.scoreColor
+import java.text.DecimalFormat
 import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -63,6 +64,7 @@ fun ReadingsScreen(
     val snack = remember { SnackbarHostState() }
     val listState = rememberLazyListState()
     val hasMore = state.measurements.size < state.totalCount
+    val format = DecimalFormat("#.#")
 
     val pullState = rememberPullRefreshState(
         refreshing = state.isRefreshing,
@@ -122,6 +124,7 @@ fun ReadingsScreen(
                     onEdit = { onEdit(m.id) },
                     onToggleSelect = { vm.toggleSelection(m.id) },
                     onLongPressSelect = { vm.addToSelection(m.id) },
+                    format = format
                 )
             }
 
@@ -168,6 +171,7 @@ private fun MeasurementCard(
     onEdit: () -> Unit,
     onToggleSelect: () -> Unit,
     onLongPressSelect: () -> Unit,
+    format: DecimalFormat,
 ) {
     val exerciseIntensity = exerciseScore(measurement)
     val currentYear = ZonedDateTime.now().year
@@ -255,14 +259,15 @@ private fun MeasurementCard(
                         modifier = Modifier.weight(37F),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        FormattedSteps(measurement = measurement)
+                        FormattedStepsText(measurement = measurement, format = format)
                     }
                     Column(
                         modifier = Modifier.weight(28F),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
-                            measurement.runningDistance?.toString() ?: stringResource(R.string.value_empty),
+                            measurement.runningDistance?.toString()
+                                ?: stringResource(R.string.value_empty),
                             style = MaterialTheme.typography.titleLarge,
                         )
                     }
@@ -271,7 +276,8 @@ private fun MeasurementCard(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
-                            measurement.cyclingDistance?.toString() ?: stringResource(R.string.value_empty),
+                            measurement.cyclingDistance?.toString()
+                                ?: stringResource(R.string.value_empty),
                             style = MaterialTheme.typography.titleLarge,
                         )
                     }
@@ -295,15 +301,25 @@ private fun MeasurementCard(
 }
 
 @Composable
-private fun FormattedSteps(measurement: SportMeasurement) {
+private fun FormattedStepsText(measurement: SportMeasurement, format: DecimalFormat) {
+    @Composable
+    fun formatSteps(steps: Int): String {
+        if (steps > 1000) {
+            val shortStepForm = format.format(steps.toDouble() / 1000)
+            return stringResource(R.string.format_steps_short_form, shortStepForm)
+        } else {
+            return steps.toString()
+        }
+    }
+
     val stepString = when {
         measurement.morningSteps != null && measurement.noonSteps != null -> stringResource(
             R.string.format_steps,
-            measurement.morningSteps, measurement.noonSteps
+            formatSteps(measurement.morningSteps), formatSteps(measurement.noonSteps)
         )
 
-        measurement.morningSteps != null -> measurement.morningSteps.toString()
-        measurement.noonSteps != null -> measurement.noonSteps.toString()
+        measurement.morningSteps != null -> formatSteps(measurement.morningSteps)
+        measurement.noonSteps != null -> formatSteps(measurement.noonSteps)
         else -> stringResource(R.string.value_empty)
     }
     Text(
