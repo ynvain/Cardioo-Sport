@@ -47,11 +47,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.presentation.chart.ChartScreen
-//import com.cardioo_sport.presentation.chart.ChartScreen
 import com.cardioo_sport.presentation.readings.ReadingsScreen
 import com.cardioo_sport.presentation.readings.ReadingsViewModel
 import com.cardioo_sport.presentation.statistics.StatisticsScreen
-//import com.cardioo_sport.presentation.statistics.StatisticsScreen
 import com.cardioo_sport.presentation.util.AccountAvatar
 
 @OptIn(ExperimentalMaterial3Api::class)

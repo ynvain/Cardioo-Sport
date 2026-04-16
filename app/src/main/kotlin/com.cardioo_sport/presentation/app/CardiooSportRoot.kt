@@ -7,12 +7,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-//import com.cardioo_sport.presentation.accounts.AccountsScreen
-//import com.cardioo_sport.presentation.chart.ChartScreen
+import com.cardioo_sport.presentation.accounts.AccountsScreen
 import com.cardioo_sport.presentation.entry.MeasurementEntryScreen
 import com.cardioo_sport.presentation.main.MainScaffold
 import com.cardioo_sport.presentation.onboarding.OnboardingScreen
-//import com.cardioo_sport.presentation.settings.SettingsScreen
+import com.cardioo_sport.presentation.settings.SettingsScreen
 import com.cardioo_sport.presentation.splash.SplashScreen
 
 @Composable
@@ -54,7 +53,8 @@ fun CardiooSportRoot() {
             // app structure simple (exactly two bottom items as requested).
             MainScaffold(
                 onOpenEntry = { idOrNull ->
-                    val route = if (idOrNull == null) Routes.Entry else "${Routes.Entry}?${Routes.ArgMeasurementId}=$idOrNull"
+                    val route =
+                        if (idOrNull == null) Routes.Entry else "${Routes.Entry}?${Routes.ArgMeasurementId}=$idOrNull"
                     navController.navigate(route)
                 },
                 onOpenSettings = { navController.navigate(Routes.Settings) },
@@ -63,13 +63,13 @@ fun CardiooSportRoot() {
         }
 
         composable(Routes.Settings) {
-        //    SettingsScreen(onBack = { navController.popBackStack() })
+            SettingsScreen(onBack = { navController.popBackStack() })
         }
         composable(Routes.Accounts) {
-          //  AccountsScreen(
-         //       onBack = { navController.popBackStack() },
-           //     onEditCurrent = { navController.navigate(Routes.Settings) },
-          //  )
+            AccountsScreen(
+                onBack = { navController.popBackStack() },
+                onEditCurrent = { navController.navigate(Routes.Settings) },
+            )
         }
 
         composable(

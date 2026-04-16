@@ -38,7 +38,7 @@
     <string name="onboarding_welcome_title">Welcome</string>
     <string name="onboarding_subtitle">Create your account and set up your profile.</string>
     <string name="label_height_unit">Height (%1$s)</string>
-    <string name="label_step_length">Step length</string>
+    <string name="label_step_length">Step length (m)</string>
     <string name="label_height_toggle">Height: %1$s</string>
     <string name="label_weight_toggle">Weight: %1$s</string>
     <string name="label_dob_format">DOB: %1$s</string>
