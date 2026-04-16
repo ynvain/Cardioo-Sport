@@ -68,13 +68,17 @@
     <string name="format_weight_with_unit">%1$s %2$s</string>
     <string name="cd_export_csv">Export CSV</string>
     <string name="statistics_no_readings">No readings yet.</string>
-    <string name="statistics_avg_bp">Average BP</string>
-    <string name="statistics_prev_avg_bp">Previous Average</string>
+    <string name="statistics_avg_score">Average Score</string>
+    <string name="statistics_prev_avg_score">Previous Average</string>
     <string name="export_csv_success">Exported CSV</string>
     <string name="export_csv_failed">Export failed</string>
     <plurals name="entries_count">
         <item quantity="one">%d entry</item>
         <item quantity="other">%d entries</item>
+    </plurals>
+    <plurals name="stretching_count">
+        <item quantity="one">%d stretching exercise</item>
+        <item quantity="other">%d stretching exercises</item>
     </plurals>
     <string name="range_week">Week</string>
     <string name="range_month">Month</string>
@@ -121,8 +125,8 @@
     <string name="stats_col_min">Min</string>
     <string name="stats_col_max">Max</string>
     <string name="stats_col_avg">Avg</string>
-    <string name="stats_row_bp_sys">Systolic</string>
-    <string name="stats_row_bp_dia">Diastolic</string>
-    <string name="stats_row_pulse">Pulse</string>
-    <string name="stats_row_weight">Weight (%1$s)</string>
+    <string name="stats_row_morning_walk">Morning walk</string>
+    <string name="stats_row_noon_walk">Noon walk</string>
+    <string name="stats_row_running_distance">Running Distance</string>
+    <string name="stats_row_cycling_distance">Cycling distance</string>
 </resources>

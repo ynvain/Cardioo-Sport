@@ -49,6 +49,7 @@ import com.cardioo_sport.R
 //import com.cardioo_sport.presentation.chart.ChartScreen
 import com.cardioo_sport.presentation.readings.ReadingsScreen
 import com.cardioo_sport.presentation.readings.ReadingsViewModel
+import com.cardioo_sport.presentation.statistics.StatisticsScreen
 //import com.cardioo_sport.presentation.statistics.StatisticsScreen
 import com.cardioo_sport.presentation.util.AccountAvatar
 
@@ -252,7 +253,7 @@ fun MainScaffold(
                         vm = readingsVm,
                     )
 
-                 //   1 -> StatisticsScreen(contentPadding = PaddingValues(0.dp))
+                    1 -> StatisticsScreen(contentPadding = PaddingValues(0.dp))
                   //  else -> ChartScreen(contentPadding = PaddingValues(0.dp))
                 }
             }
@@ -264,7 +265,7 @@ fun MainScaffold(
                     vm = readingsVm,
                 )
 
-           //     1 -> StatisticsScreen(contentPadding = padding)
+                1 -> StatisticsScreen(contentPadding = padding)
             //    else -> ChartScreen(contentPadding = padding)
             }
         }

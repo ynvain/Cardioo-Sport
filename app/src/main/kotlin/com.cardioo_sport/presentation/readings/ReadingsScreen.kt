@@ -169,7 +169,7 @@ private fun MeasurementCard(
     onToggleSelect: () -> Unit,
     onLongPressSelect: () -> Unit,
 ) {
-    val exerciseScore = exerciseScore(measurement)
+    val exerciseIntensity = exerciseScore(measurement)
     val currentYear = ZonedDateTime.now().year
     val year = getYear(measurement.timestampEpochMillis)
     val shape = RoundedCornerShape(12.dp)
@@ -234,7 +234,7 @@ private fun MeasurementCard(
 
             }
             Divider(
-                color = scoreColor(exerciseScore),
+                color = scoreColor(exerciseIntensity),
                 modifier = Modifier
                     .height(50.dp)
                     .width(3.5.dp)
