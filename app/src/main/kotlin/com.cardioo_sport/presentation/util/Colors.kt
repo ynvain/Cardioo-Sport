@@ -10,6 +10,7 @@ import com.cardioo_sport.domain.model.ExerciseScore
 
 
 val Orange = Color(0xFFFFA726);
+val Violet = Color(0xFF5B3AB7);
 
 @Composable
 fun toggleButtonBorder(toggle: Boolean): BorderStroke {

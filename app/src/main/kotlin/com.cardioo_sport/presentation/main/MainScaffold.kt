@@ -46,6 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
+import com.cardioo_sport.presentation.chart.ChartScreen
 //import com.cardioo_sport.presentation.chart.ChartScreen
 import com.cardioo_sport.presentation.readings.ReadingsScreen
 import com.cardioo_sport.presentation.readings.ReadingsViewModel
@@ -254,7 +255,7 @@ fun MainScaffold(
                     )
 
                     1 -> StatisticsScreen(contentPadding = PaddingValues(0.dp))
-                  //  else -> ChartScreen(contentPadding = PaddingValues(0.dp))
+                    else -> ChartScreen(contentPadding = PaddingValues(0.dp))
                 }
             }
         } else {
@@ -266,7 +267,7 @@ fun MainScaffold(
                 )
 
                 1 -> StatisticsScreen(contentPadding = padding)
-            //    else -> ChartScreen(contentPadding = padding)
+                else -> ChartScreen(contentPadding = padding)
             }
         }
     }
