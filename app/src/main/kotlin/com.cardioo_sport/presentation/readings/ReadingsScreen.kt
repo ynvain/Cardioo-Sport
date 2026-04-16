@@ -266,7 +266,7 @@ private fun MeasurementCard(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
-                            measurement.runningDistance?.toString()
+                            measurement.runningDistance?.let { format.format(it) }
                                 ?: stringResource(R.string.value_empty),
                             style = MaterialTheme.typography.titleLarge,
                         )
@@ -276,7 +276,7 @@ private fun MeasurementCard(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
-                            measurement.cyclingDistance?.toString()
+                            measurement.cyclingDistance?.let { format.format(it) }
                                 ?: stringResource(R.string.value_empty),
                             style = MaterialTheme.typography.titleLarge,
                         )

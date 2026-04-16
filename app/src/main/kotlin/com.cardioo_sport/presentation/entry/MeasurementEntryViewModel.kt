@@ -99,7 +99,7 @@ class MeasurementEntryViewModel @Inject constructor(
         _state.update { it.copy(noonStepsText = v.filter(Char::isDigit)) }
 
     fun setRunningDistanceText(v: String) =
-        _state.update { it.copy(runningDistanceText = v.filter(Char::isDigit)) }
+        _state.update { it.copy(runningDistanceText = v.filter { c -> c.isDigit() || c == '.' }) }
 
     fun setCyclingDistanceText(v: String) =
         _state.update { it.copy(cyclingDistanceText = v.filter { c -> c.isDigit() || c == '.' }) }
