@@ -523,11 +523,15 @@ private fun SimpleLineChart(
 
                 repeat(seriesCount) { seriesIdx ->
                     val path = Path()
-                    sorted.forEachIndexed { i, m ->
+                    var firstPoint = true
+                    sorted.forEach { m ->
                         val v = valuesFor(m)[seriesIdx]
                         v?.let {
                             val pt = Offset(xAtMillis(m.timestampEpochMillis), yAtValue(it))
-                            if (i == 0) path.moveTo(pt.x, pt.y) else path.lineTo(pt.x, pt.y)
+                            if (firstPoint) {
+                                path.moveTo(pt.x, pt.y)
+                                firstPoint = false
+                            } else path.lineTo(pt.x, pt.y)
                         }
 
                     }
