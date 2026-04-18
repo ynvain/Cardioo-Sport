@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Cardioo Sport</string>
+    <string name="app_name" translatable="false">C-Sports</string>
     <string name="action_back">Back</string>
     <string name="action_save">Save</string>
     <string name="action_cancel">Cancel</string>
@@ -33,7 +33,7 @@
     <string name="menu_manage_accounts">Manage accounts</string>
     <string name="menu_edit_current_profile">Edit current profile</string>
     <string name="label_account_name">Account name</string>
-    <string name="splash_app_title">Cardioo</string>
+    <string name="splash_app_title">C-Sports</string>
     <string name="cd_app_logo">App logo</string>
     <string name="onboarding_welcome_title">Welcome</string>
     <string name="onboarding_subtitle">Create your account and set up your profile.</string>
