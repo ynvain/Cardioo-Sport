@@ -1,10 +1,13 @@
 package com.cardioo_sport.presentation.main
 
 import android.content.res.Configuration
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.Add
@@ -39,9 +42,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -82,15 +87,25 @@ fun MainScaffold(
             if (!isLandscape) {
                 TopAppBar(
                     title = {
-                        Text(
-                            stringResource(
-                                when (tab) {
-                                    0 -> R.string.title_readings
-                                    1 -> R.string.title_statistics
-                                    else -> R.string.title_chart
-                                },
-                            ),
-                        )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.c_sports),
+                                contentDescription = stringResource(R.string.cd_app_logo),
+                                modifier = Modifier.size(36.dp),
+                            )
+                            Text(
+                                stringResource(
+                                    when (tab) {
+                                        0 -> R.string.title_readings
+                                        1 -> R.string.title_statistics
+                                        else -> R.string.title_chart
+                                    },
+                                ),
+                            )
+                        }
                     },
                     actions = {
                         if (tab == 0 && readingsState.selectedIds.isNotEmpty()) {
