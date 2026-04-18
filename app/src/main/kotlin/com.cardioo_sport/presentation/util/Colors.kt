@@ -26,6 +26,7 @@ fun scoreColor(category: ExerciseScore): Color {
         ExerciseScore.Low -> Orange
         ExerciseScore.Medium -> Color(0xFFBEDC39)
         ExerciseScore.High -> Color(0xFF009650)
+        ExerciseScore.VeryHigh -> Color(0xFF1E78BD)
         ExerciseScore.None -> Color.White
     }
 }

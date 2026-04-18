@@ -6,6 +6,7 @@ enum class ExerciseScore {
     Low,
     Medium,
     High,
+    VeryHigh
 }
 
 fun exerciseScore(measurement: SportMeasurement): ExerciseScore {
@@ -33,7 +34,8 @@ fun exerciseScore(
 
 fun exerciseScore(exerciseCount: Int): ExerciseScore {
     return when {
-        exerciseCount >= 3 -> ExerciseScore.High
+        exerciseCount > 3 -> ExerciseScore.VeryHigh
+        exerciseCount == 3 -> ExerciseScore.High
         exerciseCount == 2 -> ExerciseScore.Medium
         exerciseCount == 1 -> ExerciseScore.Low
         else -> ExerciseScore.None
