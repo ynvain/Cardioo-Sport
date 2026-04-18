@@ -236,6 +236,11 @@ fun MainScaffold(
         if (isLandscape) {
             Row(modifier = Modifier.fillMaxSize()) {
                 NavigationRail {
+                    Image(
+                        painter = painterResource(R.drawable.c_sports),
+                        contentDescription = stringResource(R.string.cd_app_logo),
+                        modifier = Modifier.size(32.dp),
+                    )
                     NavigationRailItem(
                         selected = tab == 0,
                         onClick = { tab = 0 },
