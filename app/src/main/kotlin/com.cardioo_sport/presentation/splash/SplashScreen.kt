@@ -42,7 +42,7 @@ fun SplashScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
-            painter = painterResource(R.drawable.cardioo),
+            painter = painterResource(R.drawable.c_sports),
             contentDescription = stringResource(R.string.cd_app_logo),
             modifier = Modifier.size(96.dp),
         )
