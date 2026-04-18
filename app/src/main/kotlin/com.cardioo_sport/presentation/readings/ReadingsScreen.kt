@@ -20,12 +20,15 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -40,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
@@ -47,7 +51,6 @@ import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.domain.model.exerciseScore
 import com.cardioo_sport.presentation.util.formatLocalizedDateWithoutYear
 import com.cardioo_sport.presentation.util.formatLocalizedDayOfWeek
-import com.cardioo_sport.presentation.util.formatLocalizedTime
 import com.cardioo_sport.presentation.util.getYear
 import com.cardioo_sport.presentation.util.scoreColor
 import java.text.DecimalFormat
@@ -209,7 +212,7 @@ private fun MeasurementCard(
                         end = 10.dp,
                         bottom = verticalPadding
                     )
-                    .weight(20F),
+                    .weight(18F),
                 verticalArrangement = Arrangement.spacedBy(spacing),
                 horizontalAlignment = Alignment.End,
             ) {
@@ -230,11 +233,6 @@ private fun MeasurementCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                Text(
-                    formatLocalizedTime(measurement.timestampEpochMillis),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
 
             }
             Divider(
@@ -245,41 +243,48 @@ private fun MeasurementCard(
             )
             Column(
                 modifier = Modifier
-                    .padding(start = 15.dp, top = 10.dp, end = 10.dp, bottom = 5.dp)
-                    .weight(80F),
+                    .padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 5.dp)
+                    .weight(82F),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Row(
                     modifier = Modifier
                         .padding(top = 10.dp, end = 5.dp, bottom = 5.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+
                 ) {
                     Column(
-                        modifier = Modifier.weight(37F),
+                        modifier = Modifier.weight(38F),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        FormattedStepsText(measurement = measurement, format = format)
+                        val stepText =
+                            formattedStepsText(measurement = measurement, format = format)
+                        TextWithResizableFont(stepText)
+
                     }
                     Column(
-                        modifier = Modifier.weight(28F),
+                        modifier = Modifier.weight(26F),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Text(
-                            measurement.runningDistance?.let { format.format(it) }
-                                ?: stringResource(R.string.value_empty),
-                            style = MaterialTheme.typography.titleLarge,
-                        )
+                        TextWithResizableFont(measurement.runningDistance?.let { format.format(it) }
+                            ?: stringResource(R.string.value_empty))
                     }
                     Column(
-                        modifier = Modifier.weight(30F),
+                        modifier = Modifier.weight(26F),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        Text(
-                            measurement.cyclingDistance?.let { format.format(it) }
-                                ?: stringResource(R.string.value_empty),
-                            style = MaterialTheme.typography.titleLarge,
-                        )
+                        TextWithResizableFont(measurement.cyclingDistance?.let { format.format(it) }
+                            ?: stringResource(R.string.value_empty))
+                    }
+                    Column(
+                        modifier = Modifier.weight(10F),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        if (measurement.stretching) {
+                            Icon(Icons.Default.Check, "las")
+
+                        }
+
                     }
                 }
                 Row(
@@ -301,7 +306,7 @@ private fun MeasurementCard(
 }
 
 @Composable
-private fun FormattedStepsText(measurement: SportMeasurement, format: DecimalFormat) {
+private fun formattedStepsText(measurement: SportMeasurement, format: DecimalFormat): String {
     @Composable
     fun formatSteps(steps: Int): String {
         if (steps > 1000) {
@@ -312,7 +317,7 @@ private fun FormattedStepsText(measurement: SportMeasurement, format: DecimalFor
         }
     }
 
-    val stepString = when {
+    return when {
         measurement.morningSteps != null && measurement.noonSteps != null -> stringResource(
             R.string.format_steps,
             formatSteps(measurement.morningSteps), formatSteps(measurement.noonSteps)
@@ -322,8 +327,18 @@ private fun FormattedStepsText(measurement: SportMeasurement, format: DecimalFor
         measurement.noonSteps != null -> formatSteps(measurement.noonSteps)
         else -> stringResource(R.string.value_empty)
     }
+}
+
+
+@Composable
+private fun TextWithResizableFont(text: String) {
+    val textStyle: TextStyle =
+        when (text.length) {
+            in 0..12 -> MaterialTheme.typography.titleLarge
+            else -> MaterialTheme.typography.titleMedium
+        }
     Text(
-        stepString,
-        style = MaterialTheme.typography.titleLarge,
+        text,
+        style = textStyle,
     )
 }

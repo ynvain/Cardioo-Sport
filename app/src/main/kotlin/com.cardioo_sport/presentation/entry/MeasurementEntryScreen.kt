@@ -2,7 +2,6 @@ package com.cardioo_sport.presentation.entry
 
 
 import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -123,24 +122,6 @@ fun MeasurementEntryScreen(
                         ).show()
                     },
                 ) { Text(datePart) }
-
-                OutlinedButton(
-                    onClick = {
-                        val cal = Calendar.getInstance()
-                            .apply { timeInMillis = state.timestampEpochMillis }
-                        TimePickerDialog(
-                            context,
-                            { _, hour, minute ->
-                                cal.set(Calendar.HOUR_OF_DAY, hour)
-                                cal.set(Calendar.MINUTE, minute)
-                                vm.setTimestamp(cal.timeInMillis)
-                            },
-                            cal.get(Calendar.HOUR_OF_DAY),
-                            cal.get(Calendar.MINUTE),
-                            false,
-                        ).show()
-                    },
-                ) { Text(timePart) }
                 Box(
                     modifier = Modifier
                         .size(18.dp)
