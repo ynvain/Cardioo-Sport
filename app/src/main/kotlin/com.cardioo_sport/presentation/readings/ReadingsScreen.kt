@@ -1,6 +1,5 @@
 package com.cardioo_sport.presentation.readings
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +20,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -122,47 +119,103 @@ fun ReadingsScreen(
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
             stickyHeader {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier
+                        .padding(
+                            top = 2.dp,
+                            bottom = 2.dp
+                        ), verticalAlignment = Alignment.CenterVertically
+                ) {
                     Box(
                         modifier = Modifier
-                            .weight(18F)
-                            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.primary))
+                            .padding(
+                                end = 10.dp,
+                            )
+                            .weight(18F),
+                    )
+                    Divider(
+                        modifier = Modifier
+                            .height(10.dp)
+                            .width(3.5.dp)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .padding(end = 10.dp)
+                            .weight(82F)
                     ) {
-                    }
-                    Box(modifier = Modifier.weight(31F), contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_walk),
-                            contentDescription = "Walk Icon",
-                            modifier = Modifier.size(30.dp)
-                        )
-                    }
-                    Box(modifier = Modifier.weight(21F), contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_run),
-                            contentDescription = "Run Icon",
-                            modifier = Modifier.size(30.dp)
-                        )
-                    }
+                        Row(
+                            modifier = Modifier
+                                .padding(
+                                    end = 5.dp,
+                                ), verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            val shape = RoundedCornerShape(12.dp)
+                            Card(
+                                modifier = Modifier
+                                    .clip(shape)
+                                    .weight(88F),
+                                shape = shape,
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                            ) {
+                                Row(
+                                    modifier = Modifier
+                                        .padding(
+                                            start = 11.dp,
+                                        ),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Box(
+                                        modifier = Modifier.weight(43.23F),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_walk),
+                                            contentDescription = "Walk Icon",
+                                            modifier = Modifier.size(30.dp)
+                                        )
+                                    }
+                                    Box(
+                                        modifier = Modifier.weight(28.5F),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_run),
+                                            contentDescription = "Run Icon",
+                                            modifier = Modifier.size(30.dp)
+                                        )
+                                    }
 
-                    Box(modifier = Modifier.weight(21F), contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_bike),
-                            contentDescription = "Run Icon",
-                            modifier = Modifier.size(30.dp)
-                        )
-                    }
+                                    Box(
+                                        modifier = Modifier.weight(28.3F),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_bike),
+                                            contentDescription = "Run Icon",
+                                            modifier = Modifier.size(30.dp)
+                                        )
+                                    }
+                                }
+                            }
 
-                    Box(modifier = Modifier.weight(8F), contentAlignment = Alignment.Center) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
-                            contentDescription = "Run Icon",
-                            modifier = Modifier.size(30.dp)
-                        )
+                            Box(
+                                modifier = Modifier.weight(12F),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                //    Icon(
+                                //   imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
+                                //    contentDescription = "Run Icon",
+                                //      modifier = Modifier.size(30.dp)
+                                //   )
+                            }
+                        }
                     }
                 }
+
                 //  Text(
                 //  text = "Category A",
-                //  Modifier.border(BorderStroke(1.dp, MaterialTheme.colorScheme.primary))
+                //  Modifier
                 //   )
 
             }
@@ -311,25 +364,30 @@ private fun MeasurementCard(
 
                     }
                     Column(
-                        modifier = Modifier.weight(26F),
+                        modifier = Modifier.weight(25F),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         TextWithResizableFont(measurement.runningDistance?.let { format.format(it) }
                             ?: stringResource(R.string.value_empty))
                     }
                     Column(
-                        modifier = Modifier.weight(26F),
+                        modifier = Modifier.weight(25F),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         TextWithResizableFont(measurement.cyclingDistance?.let { format.format(it) }
                             ?: stringResource(R.string.value_empty))
                     }
                     Column(
-                        modifier = Modifier.weight(10F),
+                        modifier = Modifier.weight(12F),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         if (measurement.stretching) {
-                            Icon(Icons.Default.Check, "las")
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
+                                contentDescription = "Run Icon",
+                                modifier = Modifier.size(25.dp)
+                            )
+                            // Icon(Icons.Default.Check, "las")
 
                         }
 
