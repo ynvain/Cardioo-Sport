@@ -1,5 +1,6 @@
 package com.cardioo_sport.presentation.readings
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
@@ -42,7 +43,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -118,6 +121,51 @@ fun ReadingsScreen(
             contentPadding = PaddingValues(5.dp),
             verticalArrangement = Arrangement.spacedBy(5.dp),
         ) {
+            stickyHeader {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Box(
+                        modifier = Modifier
+                            .weight(18F)
+                            .border(BorderStroke(1.dp, MaterialTheme.colorScheme.primary))
+                    ) {
+                    }
+                    Box(modifier = Modifier.weight(31F), contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_walk),
+                            contentDescription = "Walk Icon",
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+                    Box(modifier = Modifier.weight(21F), contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_run),
+                            contentDescription = "Run Icon",
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+
+                    Box(modifier = Modifier.weight(21F), contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_bike),
+                            contentDescription = "Run Icon",
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+
+                    Box(modifier = Modifier.weight(8F), contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
+                            contentDescription = "Run Icon",
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+                }
+                //  Text(
+                //  text = "Category A",
+                //  Modifier.border(BorderStroke(1.dp, MaterialTheme.colorScheme.primary))
+                //   )
+
+            }
             val selectionActive = state.selectedIds.isNotEmpty()
             items(items = state.measurements, key = { it.id }) { m ->
                 MeasurementCard(
@@ -252,7 +300,7 @@ private fun MeasurementCard(
                         .padding(top = 10.dp, end = 5.dp, bottom = 5.dp),
                     verticalAlignment = Alignment.CenterVertically,
 
-                ) {
+                    ) {
                     Column(
                         modifier = Modifier.weight(38F),
                         horizontalAlignment = Alignment.CenterHorizontally,
