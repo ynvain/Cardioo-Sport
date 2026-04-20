@@ -122,8 +122,6 @@ fun ReadingsScreen(
                 Row(
                     modifier = Modifier
                         .padding(
-                            top = 2.dp,
-                            bottom = 2.dp
                         ), verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
@@ -140,20 +138,12 @@ fun ReadingsScreen(
                     )
                     Box(
                         modifier = Modifier
-                            .padding(end = 10.dp)
                             .weight(82F)
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(
-                                    end = 5.dp,
-                                ), verticalAlignment = Alignment.CenterVertically
-                        ) {
                             val shape = RoundedCornerShape(12.dp)
                             Card(
                                 modifier = Modifier
-                                    .clip(shape)
-                                    .weight(88F),
+                                    .clip(shape),
                                 shape = shape,
                                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -161,12 +151,15 @@ fun ReadingsScreen(
                                 Row(
                                     modifier = Modifier
                                         .padding(
-                                            start = 11.dp,
+                                            start = 10.dp,
+                                            end = 15.dp,
+                                            top = 1.dp,
+                                            bottom = 1.dp
                                         ),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Box(
-                                        modifier = Modifier.weight(43.23F),
+                                        modifier = Modifier.weight(38F),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
@@ -176,7 +169,7 @@ fun ReadingsScreen(
                                         )
                                     }
                                     Box(
-                                        modifier = Modifier.weight(28.5F),
+                                        modifier = Modifier.weight(25F),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
@@ -187,7 +180,7 @@ fun ReadingsScreen(
                                     }
 
                                     Box(
-                                        modifier = Modifier.weight(28.3F),
+                                        modifier = Modifier.weight(25F),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Icon(
@@ -196,20 +189,19 @@ fun ReadingsScreen(
                                             modifier = Modifier.size(30.dp)
                                         )
                                     }
+                                    Box(
+                                        modifier = Modifier.weight(12F),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
+                                            contentDescription = "Run Icon",
+                                            modifier = Modifier.size(28.dp)
+                                        )
+                                    }
                                 }
                             }
 
-                            Box(
-                                modifier = Modifier.weight(12F),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                //    Icon(
-                                //   imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
-                                //    contentDescription = "Run Icon",
-                                //      modifier = Modifier.size(30.dp)
-                                //   )
-                            }
-                        }
                     }
                 }
 
