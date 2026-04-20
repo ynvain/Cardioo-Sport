@@ -184,7 +184,7 @@ fun ReadingsScreen(
                                 ) {
                                     Icon(
                                         imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_bike),
-                                        contentDescription = "Run Icon",
+                                        contentDescription = "Cycle Icon",
                                         modifier = Modifier.size(30.dp)
                                     )
                                 }
@@ -194,7 +194,7 @@ fun ReadingsScreen(
                                 ) {
                                     Icon(
                                         imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
-                                        contentDescription = "Run Icon",
+                                        contentDescription = "Stretch Icon",
                                         modifier = Modifier.size(28.dp)
                                     )
                                 }
@@ -374,11 +374,9 @@ private fun MeasurementCard(
                         if (measurement.stretching) {
                             Icon(
                                 imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
-                                contentDescription = "Run Icon",
+                                contentDescription = "Stretch Icon",
                                 modifier = Modifier.size(25.dp)
                             )
-                            // Icon(Icons.Default.Check, "las")
-
                         }
 
                     }
