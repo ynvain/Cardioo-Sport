@@ -288,8 +288,8 @@ private fun MeasurementCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            val spacing = if (year == currentYear) 4.dp else 1.dp
-            val verticalPadding = if (year == currentYear) 5.dp else 3.dp
+            val spacing = if (year == currentYear) 4.dp else 2.dp
+            val verticalPadding = if (year == currentYear) 12.dp else 5.dp
             Column(
                 modifier = Modifier
                     .padding(
@@ -340,7 +340,7 @@ private fun MeasurementCard(
             ) {
                 Row(
                     modifier = Modifier
-                        .padding(top = 10.dp, bottom = 5.dp),
+                        .padding(top = 5.dp, bottom = 2.dp),
                     verticalAlignment = Alignment.CenterVertically,
 
                     ) {
@@ -430,7 +430,7 @@ private fun formattedStepsText(measurement: SportMeasurement, format: DecimalFor
 private fun TextWithResizableFont(text: String) {
     val textStyle: TextStyle =
         when (text.length) {
-            in 0..12 -> MaterialTheme.typography.titleLarge
+            in 0..11 -> MaterialTheme.typography.titleLarge
             else -> MaterialTheme.typography.titleMedium
         }
     Text(
@@ -448,7 +448,7 @@ object RowProps {
     const val stretchingWeight = 12F
     val dateStartPadding = 5.dp
     val dateEndPadding = 10.dp
-    val measurementStartPadding = 10.dp
+    val measurementStartPadding = 7.dp
     val measurementEndPadding = 3.dp
     val dividerWidth = 3.5.dp
 }
