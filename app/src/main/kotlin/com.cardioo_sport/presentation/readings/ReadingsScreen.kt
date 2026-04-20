@@ -449,6 +449,6 @@ object RowProps {
     val dateStartPadding = 5.dp
     val dateEndPadding = 10.dp
     val measurementStartPadding = 10.dp
-    val measurementEndPadding = 15.dp
+    val measurementEndPadding = 3.dp
     val dividerWidth = 3.5.dp
 }
