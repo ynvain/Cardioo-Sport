@@ -44,11 +44,12 @@
     <string name="label_dob_format">DOB: %1$s</string>
     <string name="label_gender_format">Gender: %1$s</string>
     <string name="settings_section_profile">Profile</string>
-    <string name="label_morning_walk_steps">Morning walk</string>
-    <string name="label_noon_walk_steps">Noon walk</string>
-    <string name="label_running_distance">Running Distance</string>
-    <string name="label_cycling_distance">Cycling Distance</string>
+    <string name="label_morning_walk_steps">Morning steps</string>
+    <string name="label_noon_walk_steps">Noon steps</string>
+    <string name="label_running_distance">Running (km)</string>
+    <string name="label_cycling_distance">Cycling (km)</string>
     <string name="label_stretching">Stretching</string>
+    <string name="format_distance">%1$s km</string>
     <string name="cd_toggle_weight_unit">Toggle weight unit</string>
     <string name="bp_category_format">BP category: </string>
     <string name="bmi_format">BMI: %1$d</string>

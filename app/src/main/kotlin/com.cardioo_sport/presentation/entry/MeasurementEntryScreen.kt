@@ -38,15 +38,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.presentation.util.formatLocalizedDate
 import com.cardioo_sport.presentation.util.formatLocalizedTime
 import com.cardioo_sport.presentation.util.scoreColor
+import java.text.DecimalFormat
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,7 +62,7 @@ fun MeasurementEntryScreen(
 ) {
     val state by vm.state.collectAsState()
     val context = LocalContext.current
-
+    val format = DecimalFormat("#.#")
     val focusMorningSteps = remember { FocusRequester() }
 
 
@@ -101,9 +105,12 @@ fun MeasurementEntryScreen(
                 .padding(padding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 OutlinedButton(
                     onClick = {
                         val cal = Calendar.getInstance()
@@ -129,58 +136,131 @@ fun MeasurementEntryScreen(
                 )
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            @Composable
+            fun convertStepsToDistanceText(steps: Int): String {
+                val distance = (steps * state.stepLength) / 1000
+                return stringResource(R.string.format_distance, format.format(distance))
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(15.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 OutlinedTextField(
                     value = state.morningStepsText,
                     onValueChange = { new ->
                         vm.setMorningStepsText(new)
                     },
-                    label = { Text(stringResource(R.string.label_morning_walk_steps)) },
+                    label = {
+                        TextWithIconLabel(
+                            R.string.label_morning_walk_steps,
+                            R.drawable.c_sports_icons_walk
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(3f)
                         .focusRequester(focusMorningSteps),
                     singleLine = true,
                 )
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                ) {
+                    state.morningSteps?.let {
+                        Text(
+                            text = convertStepsToDistanceText(it),
+                            style = MaterialTheme.typography.titleLarge,
+                        )
+                    }
+                }
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(15.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 OutlinedTextField(
                     value = state.noonStepsText,
                     onValueChange = { new ->
                         vm.setNoonStepsText(new)
                     },
-                    label = { Text(stringResource(R.string.label_noon_walk_steps)) },
+                    label = {
+                        TextWithIconLabel(
+                            R.string.label_noon_walk_steps,
+                            R.drawable.c_sports_icons_walk
+                        )
+                    },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier
-                        .weight(1f),
+                        .weight(3f),
+                    singleLine = true,
+                )
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                ) {
+                    state.noonSteps?.let {
+                        Text(
+                            text = convertStepsToDistanceText(it),
+                            style = MaterialTheme.typography.titleLarge,
+                        )
+                    }
+                }
+
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = state.runningDistanceText,
+                    onValueChange = { new ->
+                        vm.setRunningDistanceText(new)
+                    },
+                    label = {
+                        TextWithIconLabel(
+                            R.string.label_running_distance,
+                            R.drawable.c_sports_icons_run
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    modifier = Modifier.weight(1f),
+                    singleLine = true,
+                )
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    value = state.cyclingDistanceText,
+                    onValueChange = { new ->
+                        vm.setCyclingDistanceText(new)
+                    },
+                    label = {
+                        TextWithIconLabel(
+                            R.string.label_cycling_distance,
+                            R.drawable.c_sports_icons_bike
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    modifier = Modifier.weight(1f),
                     singleLine = true,
                 )
             }
 
-            OutlinedTextField(
-                value = state.runningDistanceText,
-                onValueChange = { new ->
-                    vm.setRunningDistanceText(new)
-                },
-                label = { Text(stringResource(R.string.label_running_distance)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                singleLine = true,
-            )
 
-            OutlinedTextField(
-                value = state.cyclingDistanceText,
-                onValueChange = { new ->
-                    vm.setCyclingDistanceText(new)
-                },
-                label = { Text(stringResource(R.string.label_cycling_distance)) },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                singleLine = true,
-            )
-
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                Text(stringResource(R.string.label_stretching))
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextWithIconLabel(
+                    R.string.label_stretching,
+                    R.drawable.c_sports_icons_stretch,
+                    20.dp
+                )
                 Switch(
                     checked = state.stretching,
                     onCheckedChange = { vm.setStretching(it) }
@@ -207,5 +287,20 @@ fun MeasurementEntryScreen(
                 Text(stringResource(if (state.saving) R.string.state_saving else R.string.action_save))
             }
         }
+    }
+}
+
+@Composable
+fun TextWithIconLabel(textId: Int, iconId: Int, size: Dp = 16.dp) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(stringResource(textId))
+        Icon(
+            imageVector = ImageVector.vectorResource(id = iconId),
+            contentDescription = "Label Icon",
+            modifier = Modifier.size(size)
+        )
     }
 }

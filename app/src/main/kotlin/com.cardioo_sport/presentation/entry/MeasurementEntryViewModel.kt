@@ -45,12 +45,17 @@ class MeasurementEntryViewModel @Inject constructor(
         val noonSteps: Int? get() = noonStepsText.toIntOrNull()
         val runningDistance: Double? get() = runningDistanceText.toDoubleOrNull()
         val cyclingDistance: Double? get() = cyclingDistanceText.toDoubleOrNull()
+        val stepLength: Double get() = profile?.stepLength ?: 1.0
     }
 
     fun load(measurementId: Long?) {
         viewModelScope.launch {
             val profile = observeProfile().first()
-            _state.update { it.copy(profile = profile) }
+            _state.update {
+                it.copy(
+                    profile = profile,
+                )
+            }
 
             if (measurementId == null) {
                 _state.update {
@@ -122,7 +127,8 @@ class MeasurementEntryViewModel @Inject constructor(
 
     fun validate(): Int? {
         if (_state.value.morningSteps == null && _state.value.noonSteps == null && _state.value.runningDistance == null &&
-            _state.value.cyclingDistance == null && !_state.value.stretching) return R.string.error_enter_any_params
+            _state.value.cyclingDistance == null && !_state.value.stretching
+        ) return R.string.error_enter_any_params
         return null
     }
 
