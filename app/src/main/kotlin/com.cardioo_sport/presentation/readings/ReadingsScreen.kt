@@ -120,96 +120,89 @@ fun ReadingsScreen(
         ) {
             stickyHeader {
                 Row(
-                    modifier = Modifier
-                        .padding(
-                        ), verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
                         modifier = Modifier
                             .padding(
-                                end = 10.dp,
+                                start = RowProps.dateStartPadding,
+                                end = RowProps.dateEndPadding,
                             )
-                            .weight(18F),
+                            .weight(RowProps.dateWeight),
                     )
                     Divider(
                         modifier = Modifier
                             .height(10.dp)
-                            .width(3.5.dp)
+                            .width(RowProps.dividerWidth)
                     )
                     Box(
                         modifier = Modifier
-                            .weight(82F)
+                            .weight(RowProps.measurementWeight)
                     ) {
-                            val shape = RoundedCornerShape(12.dp)
-                            Card(
+                        val shape = RoundedCornerShape(12.dp)
+                        Card(
+                            modifier = Modifier
+                                .clip(shape),
+                            shape = shape,
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                        ) {
+                            Row(
                                 modifier = Modifier
-                                    .clip(shape),
-                                shape = shape,
-                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                                    .padding(
+                                        start = RowProps.measurementStartPadding,
+                                        end = RowProps.measurementEndPadding,
+                                        top = 1.dp,
+                                        bottom = 1.dp
+                                    ),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Row(
-                                    modifier = Modifier
-                                        .padding(
-                                            start = 10.dp,
-                                            end = 15.dp,
-                                            top = 1.dp,
-                                            bottom = 1.dp
-                                        ),
-                                    verticalAlignment = Alignment.CenterVertically
+                                Box(
+                                    modifier = Modifier.weight(RowProps.walkingWeight),
+                                    contentAlignment = Alignment.Center
                                 ) {
-                                    Box(
-                                        modifier = Modifier.weight(38F),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_walk),
-                                            contentDescription = "Walk Icon",
-                                            modifier = Modifier.size(30.dp)
-                                        )
-                                    }
-                                    Box(
-                                        modifier = Modifier.weight(25F),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_run),
-                                            contentDescription = "Run Icon",
-                                            modifier = Modifier.size(30.dp)
-                                        )
-                                    }
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_walk),
+                                        contentDescription = "Walk Icon",
+                                        modifier = Modifier.size(30.dp)
+                                    )
+                                }
+                                Box(
+                                    modifier = Modifier.weight(RowProps.runningWeight),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_run),
+                                        contentDescription = "Run Icon",
+                                        modifier = Modifier.size(30.dp)
+                                    )
+                                }
 
-                                    Box(
-                                        modifier = Modifier.weight(25F),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_bike),
-                                            contentDescription = "Run Icon",
-                                            modifier = Modifier.size(30.dp)
-                                        )
-                                    }
-                                    Box(
-                                        modifier = Modifier.weight(12F),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Icon(
-                                            imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
-                                            contentDescription = "Run Icon",
-                                            modifier = Modifier.size(28.dp)
-                                        )
-                                    }
+                                Box(
+                                    modifier = Modifier.weight(RowProps.cyclingWeight),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_bike),
+                                        contentDescription = "Run Icon",
+                                        modifier = Modifier.size(30.dp)
+                                    )
+                                }
+                                Box(
+                                    modifier = Modifier.weight(RowProps.stretchingWeight),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
+                                        contentDescription = "Run Icon",
+                                        modifier = Modifier.size(28.dp)
+                                    )
                                 }
                             }
+                        }
 
                     }
                 }
-
-                //  Text(
-                //  text = "Category A",
-                //  Modifier
-                //   )
-
             }
             val selectionActive = state.selectedIds.isNotEmpty()
             items(items = state.measurements, key = { it.id }) { m ->
@@ -300,12 +293,12 @@ private fun MeasurementCard(
             Column(
                 modifier = Modifier
                     .padding(
-                        start = 5.dp,
+                        start = RowProps.dateStartPadding,
                         top = verticalPadding,
-                        end = 10.dp,
+                        end = RowProps.dateEndPadding,
                         bottom = verticalPadding
                     )
-                    .weight(18F),
+                    .weight(RowProps.dateWeight),
                 verticalArrangement = Arrangement.spacedBy(spacing),
                 horizontalAlignment = Alignment.End,
             ) {
@@ -332,22 +325,27 @@ private fun MeasurementCard(
                 color = scoreColor(exerciseIntensity),
                 modifier = Modifier
                     .height(50.dp)
-                    .width(3.5.dp)
+                    .width(RowProps.dividerWidth)
             )
             Column(
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 5.dp)
-                    .weight(82F),
+                    .padding(
+                        start = RowProps.measurementStartPadding,
+                        top = 10.dp,
+                        RowProps.measurementEndPadding,
+                        bottom = 5.dp
+                    )
+                    .weight(RowProps.measurementWeight),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Row(
                     modifier = Modifier
-                        .padding(top = 10.dp, end = 5.dp, bottom = 5.dp),
+                        .padding(top = 10.dp, bottom = 5.dp),
                     verticalAlignment = Alignment.CenterVertically,
 
                     ) {
                     Column(
-                        modifier = Modifier.weight(38F),
+                        modifier = Modifier.weight(RowProps.walkingWeight),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         val stepText =
@@ -356,21 +354,21 @@ private fun MeasurementCard(
 
                     }
                     Column(
-                        modifier = Modifier.weight(25F),
+                        modifier = Modifier.weight(RowProps.runningWeight),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         TextWithResizableFont(measurement.runningDistance?.let { format.format(it) }
                             ?: stringResource(R.string.value_empty))
                     }
                     Column(
-                        modifier = Modifier.weight(25F),
+                        modifier = Modifier.weight(RowProps.cyclingWeight),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         TextWithResizableFont(measurement.cyclingDistance?.let { format.format(it) }
                             ?: stringResource(R.string.value_empty))
                     }
                     Column(
-                        modifier = Modifier.weight(12F),
+                        modifier = Modifier.weight(RowProps.stretchingWeight),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         if (measurement.stretching) {
@@ -439,4 +437,18 @@ private fun TextWithResizableFont(text: String) {
         text,
         style = textStyle,
     )
+}
+
+object RowProps {
+    const val dateWeight = 18F
+    const val measurementWeight = 82F
+    const val walkingWeight = 38F
+    const val runningWeight = 25F
+    const val cyclingWeight = 25F
+    const val stretchingWeight = 12F
+    val dateStartPadding = 5.dp
+    val dateEndPadding = 10.dp
+    val measurementStartPadding = 10.dp
+    val measurementEndPadding = 15.dp
+    val dividerWidth = 3.5.dp
 }
