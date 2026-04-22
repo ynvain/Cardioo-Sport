@@ -48,7 +48,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.SportMeasurement
-import com.cardioo_sport.presentation.theme.GreenPrimary
 import com.cardioo_sport.presentation.util.decimalFormat
 import com.cardioo_sport.presentation.util.formatSteps
 import com.cardioo_sport.presentation.util.scoreColor
@@ -328,7 +327,7 @@ private fun StatsRow(
         Text(min, modifier = Modifier.weight(1f))
         Text(max, modifier = Modifier.weight(1f))
         Text(avg, modifier = Modifier.weight(1f))
-        Text(total, modifier = Modifier.weight(1f), color = GreenPrimary)
+        Text(total, modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.primary)
     }
 }
 

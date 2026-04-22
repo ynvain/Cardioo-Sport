@@ -12,11 +12,11 @@ private val LightScheme = lightColorScheme(
     onPrimary = White,
     primaryContainer = GreenContainer,
     onPrimaryContainer = Black,
-    secondary = GreenAccent,
+    secondary = GreenPrimary,
     onSecondary = Black,
     background = White,
     onBackground = Black,
-    surface = White,
+    surface = ColorTokens.LightSurface,
     onSurface = Black,
 )
 
@@ -48,5 +48,7 @@ fun CardiooSportTheme(
 private object ColorTokens {
     val DarkBackground = Color(0xFF0F0F10)
     val DarkSurface = Color(0xFF17171A)
+
+    val LightSurface = Color(0xFFF6F6F6)
 }
 
