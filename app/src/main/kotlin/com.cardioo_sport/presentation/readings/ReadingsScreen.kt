@@ -49,8 +49,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.domain.model.exerciseScore
+import com.cardioo_sport.presentation.util.decimalFormat
 import com.cardioo_sport.presentation.util.formatLocalizedDateWithoutYear
 import com.cardioo_sport.presentation.util.formatLocalizedDayOfWeek
+import com.cardioo_sport.presentation.util.formatSteps
 import com.cardioo_sport.presentation.util.getYear
 import com.cardioo_sport.presentation.util.scoreColor
 import java.text.DecimalFormat
@@ -67,7 +69,6 @@ fun ReadingsScreen(
     val snack = remember { SnackbarHostState() }
     val listState = rememberLazyListState()
     val hasMore = state.measurements.size < state.totalCount
-    val format = DecimalFormat("#.#")
 
     val pullState = rememberPullRefreshState(
         refreshing = state.isRefreshing,
@@ -213,7 +214,7 @@ fun ReadingsScreen(
                     onEdit = { onEdit(m.id) },
                     onToggleSelect = { vm.toggleSelection(m.id) },
                     onLongPressSelect = { vm.addToSelection(m.id) },
-                    format = format
+                    format = decimalFormat
                 )
             }
 
@@ -349,7 +350,7 @@ private fun MeasurementCard(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         val stepText =
-                            formattedStepsText(measurement = measurement, format = format)
+                            formattedStepsText(measurement = measurement)
                         TextWithResizableFont(stepText)
 
                     }
@@ -400,17 +401,7 @@ private fun MeasurementCard(
 }
 
 @Composable
-private fun formattedStepsText(measurement: SportMeasurement, format: DecimalFormat): String {
-    @Composable
-    fun formatSteps(steps: Int): String {
-        if (steps > 1000) {
-            val shortStepForm = format.format(steps.toDouble() / 1000)
-            return stringResource(R.string.format_steps_short_form, shortStepForm)
-        } else {
-            return steps.toString()
-        }
-    }
-
+private fun formattedStepsText(measurement: SportMeasurement): String {
     return when {
         measurement.morningSteps != null && measurement.noonSteps != null -> stringResource(
             R.string.format_steps,
@@ -437,7 +428,7 @@ private fun TextWithResizableFont(text: String) {
     )
 }
 
-object RowProps {
+private object RowProps {
     const val dateWeight = 18F
     const val measurementWeight = 82F
     const val walkingWeight = 38F
