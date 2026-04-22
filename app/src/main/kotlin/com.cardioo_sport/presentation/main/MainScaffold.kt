@@ -44,7 +44,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -196,7 +195,7 @@ fun MainScaffold(
             if (tab == 0) {
                 FloatingActionButton(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = Color.White,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     onClick = { onOpenEntry(null) },
                 ) {
                     Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.action_add))
@@ -239,7 +238,7 @@ fun MainScaffold(
                     Image(
                         painter = painterResource(R.drawable.c_sports),
                         contentDescription = stringResource(R.string.cd_app_logo),
-                        modifier = Modifier.size(32.dp),
+                        modifier = Modifier.size(36.dp),
                     )
                     NavigationRailItem(
                         selected = tab == 0,
