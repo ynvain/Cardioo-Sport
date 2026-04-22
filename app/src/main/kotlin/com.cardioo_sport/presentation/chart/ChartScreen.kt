@@ -24,6 +24,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -43,9 +45,11 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
@@ -53,7 +57,6 @@ import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.presentation.theme.GreenPrimary
 import com.cardioo_sport.presentation.util.Orange
 import com.cardioo_sport.presentation.util.Violet
-import com.cardioo_sport.presentation.util.toggleButtonBorder
 import java.text.DecimalFormat
 import java.time.Instant
 import java.time.ZoneId
@@ -96,7 +99,19 @@ fun ChartScreen(
 
     @Composable
     fun toggleMetricBorder(buttonMetric: ChartViewModel.Metric): BorderStroke {
-        return toggleButtonBorder(state.metric == buttonMetric)
+        return if (state.metric == buttonMetric) BorderStroke(
+            2.dp,
+            MaterialTheme.colorScheme.primary
+        )
+        else BorderStroke(
+            2.dp,
+            MaterialTheme.colorScheme.surface
+        )
+    }
+
+    @Composable
+    fun toggleMetricIconTint(buttonMetric: ChartViewModel.Metric): Color {
+        return if (state.metric == buttonMetric) MaterialTheme.colorScheme.primary else LocalContentColor.current
     }
 
     var rangeExpanded by remember { mutableStateOf(false) }
@@ -134,35 +149,42 @@ fun ChartScreen(
                 onClick = { vm.setMetric(ChartViewModel.Metric.Steps) },
                 border = toggleMetricBorder(ChartViewModel.Metric.Steps)
             ) {
-                Text(
-                    stringResource(
-                        R.string.chart_metric_steps
-                    ),
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_walk),
+                    contentDescription = "Label Icon",
+                    modifier = Modifier.size(28.dp),
+                    tint = toggleMetricIconTint(ChartViewModel.Metric.Steps)
                 )
             }
             OutlinedButton(
                 onClick = { vm.setMetric(ChartViewModel.Metric.RunningDistance) },
                 border = toggleMetricBorder(ChartViewModel.Metric.RunningDistance)
             ) {
-                Text(
-                    stringResource(
-                        R.string.chart_metric_running_distance,
-                    ),
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_run),
+                    contentDescription = "Label Icon",
+                    modifier = Modifier.size(28.dp),
+                    tint = toggleMetricIconTint(ChartViewModel.Metric.RunningDistance)
                 )
             }
             OutlinedButton(
                 onClick = { vm.setMetric(ChartViewModel.Metric.CyclingDistance) },
                 border = toggleMetricBorder(ChartViewModel.Metric.CyclingDistance)
             ) {
-                Text(
-                    stringResource(
-                        R.string.chart_metric_cycling_distance,
-                    ),
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_bike),
+                    contentDescription = "Label Icon",
+                    modifier = Modifier.size(28.dp),
+                    tint = toggleMetricIconTint(ChartViewModel.Metric.CyclingDistance)
                 )
             }
             Box {
                 OutlinedButton(
                     onClick = { rangeExpanded = true },
+                    border = BorderStroke(
+                        2.dp,
+                        MaterialTheme.colorScheme.surface
+                    )
                 ) {
                     Text(periodLabel)
                 }

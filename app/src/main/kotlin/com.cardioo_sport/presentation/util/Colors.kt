@@ -14,10 +14,8 @@ val Violet = Color(0xFF5B3AB7);
 
 @Composable
 fun toggleButtonBorder(toggle: Boolean): BorderStroke {
-    val toggledButtonBorder = BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
-    val untoggledButtonBorder = ButtonDefaults.outlinedButtonBorder(true)
-    return if (toggle) toggledButtonBorder
-    else untoggledButtonBorder
+    return if (toggle) BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+    else ButtonDefaults.outlinedButtonBorder(true)
 }
 
 
