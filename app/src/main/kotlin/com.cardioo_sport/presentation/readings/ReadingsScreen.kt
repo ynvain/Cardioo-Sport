@@ -133,7 +133,6 @@ fun ReadingsScreen(
                     )
                     Divider(
                         modifier = Modifier
-                            .height(10.dp)
                             .width(RowProps.dividerWidth)
                     )
                     Box(
