@@ -48,8 +48,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.SportMeasurement
+import com.cardioo_sport.presentation.theme.GreenPrimary
+import com.cardioo_sport.presentation.util.decimalFormat
+import com.cardioo_sport.presentation.util.formatSteps
 import com.cardioo_sport.presentation.util.scoreColor
-import com.cardioo_sport.presentation.util.weightUnitString
 import kotlinx.coroutines.launch
 
 @Composable
@@ -169,11 +171,6 @@ fun StatisticsScreen(
                             ),
                             style = MaterialTheme.typography.bodyMedium,
                         )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
                         state.summary.averageExerciseScoreCount?.let { count ->
                             Text(
                                 text = count.toString(),
@@ -198,11 +195,6 @@ fun StatisticsScreen(
                             ),
                             style = MaterialTheme.typography.bodyMedium,
                         )
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
                         state.summary.prevAverageExerciseScoreCount?.let { count ->
                             Text(
                                 text = count.toString(),
@@ -216,32 +208,34 @@ fun StatisticsScreen(
                         )
                     }
                 }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        pluralStringResource(
-                            R.plurals.entries_count,
-                            state.summary.count,
-                            state.summary.count,
-                        ),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
-                    Text(
-                        pluralStringResource(
-                            R.plurals.stretching_count,
-                            state.summary.stretchingCount,
-                            state.summary.stretchingCount,
+                Box(modifier = Modifier.padding(top = 10.dp)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            pluralStringResource(
+                                R.plurals.entries_count,
+                                state.summary.count,
+                                state.summary.count,
                             ),
-                        style = MaterialTheme.typography.bodySmall,
-                    )
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                        Text(
+                            pluralStringResource(
+                                R.plurals.stretching_count,
+                                state.summary.stretchingCount,
+                                state.summary.stretchingCount,
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                    }
                 }
-            }
 
-            StatsTable(
-                table = state.table,
-            )
+                StatsTable(
+                    table = state.table,
+                )
+            }
         }
     }
 
@@ -265,34 +259,48 @@ private fun StatsTable(
             min = stringResource(R.string.stats_col_min),
             max = stringResource(R.string.stats_col_max),
             avg = stringResource(R.string.stats_col_avg),
+            total = stringResource(R.string.stats_col_total),
             isHeader = true,
             headBg = headBg,
         )
         StatsRow(
             label = stringResource(R.string.stats_row_morning_walk),
-            min = table.minMorningSteps?.toString() ?: "—",
-            max = table.maxMorningSteps?.toString() ?: "—",
-            avg = table.avgMorningSteps?.toString() ?: "—",
+            min = formatTableSteps(table.minMorningSteps),
+            max = formatTableSteps(table.maxMorningSteps),
+            avg = formatTableSteps(table.avgMorningSteps),
+            total = formatTableSteps(table.totalMorningSteps),
         )
         StatsRow(
             label = stringResource(R.string.stats_row_noon_walk),
-            min = table.minNoonSteps?.toString() ?: "—",
-            max = table.maxNoonSteps?.toString() ?: "—",
-            avg = table.avgNoonSteps?.toString() ?: "—",
+            min = formatTableSteps(table.minNoonSteps),
+            max = formatTableSteps(table.maxNoonSteps),
+            avg = formatTableSteps(table.avgNoonSteps),
+            total = formatTableSteps(table.totalNoonSteps),
         )
         StatsRow(
             label = stringResource(R.string.stats_row_running_distance),
-            min = table.minRunningDistance?.let { "%.1f".format(it) } ?: "—",
-            max = table.maxRunningDistance?.let { "%.1f".format(it) } ?: "—",
-            avg = table.avgRunningDistance?.let { "%.1f".format(it) } ?: "—",
+            min = formatTableDistance(table.minRunningDistance),
+            max = formatTableDistance(table.maxRunningDistance),
+            avg = formatTableDistance(table.avgRunningDistance),
+            total = formatTableDistance(table.totalRunningDistance),
         )
         StatsRow(
             label = stringResource(R.string.stats_row_cycling_distance),
-            min = table.minCyclingDistance?.let { "%.1f".format(it) } ?: "—",
-            max = table.maxCyclingDistance?.let { "%.1f".format(it) } ?: "—",
-            avg = table.avgCyclingDistance?.let { "%.1f".format(it) } ?: "—",
+            min = formatTableDistance(table.minCyclingDistance),
+            max = formatTableDistance(table.maxCyclingDistance),
+            avg = formatTableDistance(table.avgCyclingDistance),
+            total = formatTableDistance(table.totalCyclingDistance),
         )
     }
+}
+
+@Composable
+private fun formatTableSteps(steps: Int?): String {
+    return steps?.let { formatSteps(it) } ?: "—"
+}
+
+private fun formatTableDistance(distance: Double?): String {
+    return distance?.let { decimalFormat.format(it) } ?: "—"
 }
 
 @Composable
@@ -301,6 +309,7 @@ private fun StatsRow(
     min: String,
     max: String,
     avg: String,
+    total: String,
     isHeader: Boolean = false,
     headBg: androidx.compose.ui.graphics.Color = androidx.compose.ui.graphics.Color.Unspecified,
 ) {
@@ -319,6 +328,7 @@ private fun StatsRow(
         Text(min, modifier = Modifier.weight(1f))
         Text(max, modifier = Modifier.weight(1f))
         Text(avg, modifier = Modifier.weight(1f))
+        Text(total, modifier = Modifier.weight(1f), color = GreenPrimary)
     }
 }
 

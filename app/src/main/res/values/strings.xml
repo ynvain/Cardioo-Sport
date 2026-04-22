@@ -127,8 +127,9 @@
     <string name="stats_col_min">Min</string>
     <string name="stats_col_max">Max</string>
     <string name="stats_col_avg">Avg</string>
-    <string name="stats_row_morning_walk">Morning walk</string>
-    <string name="stats_row_noon_walk">Noon walk</string>
-    <string name="stats_row_running_distance">Running Distance</string>
-    <string name="stats_row_cycling_distance">Cycling distance</string>
+    <string name="stats_col_total">Total</string>
+    <string name="stats_row_morning_walk">Morning steps</string>
+    <string name="stats_row_noon_walk">Noon steps</string>
+    <string name="stats_row_running_distance">Running (km)</string>
+    <string name="stats_row_cycling_distance">Cycling (km)</string>
 </resources>

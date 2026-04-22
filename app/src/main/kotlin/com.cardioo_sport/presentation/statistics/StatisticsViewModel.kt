@@ -4,10 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cardioo_sport.domain.model.ExerciseScore
 import com.cardioo_sport.domain.model.SportMeasurement
-import com.cardioo_sport.domain.model.WeightUnit
 import com.cardioo_sport.domain.model.exerciseScore
 import com.cardioo_sport.domain.model.exerciseScoreCount
-
 import com.cardioo_sport.domain.usecase.ObserveMeasurements
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -109,6 +107,10 @@ class StatisticsViewModel @Inject constructor(
         val minCyclingDistance: Double? = null,
         val maxCyclingDistance: Double? = null,
         val avgCyclingDistance: Double? = null,
+        val totalMorningSteps: Int? = null,
+        val totalNoonSteps: Int? = null,
+        val totalRunningDistance: Double? = null,
+        val totalCyclingDistance: Double? = null,
     ) {
         companion object {
             fun from(list: List<SportMeasurement>): TableStats {
@@ -131,6 +133,12 @@ class StatisticsViewModel @Inject constructor(
                     minCyclingDistance = cyclingDistanceList.minOrNull(),
                     maxCyclingDistance = cyclingDistanceList.maxOrNull(),
                     avgCyclingDistance = cyclingDistanceList.takeIf { it.isNotEmpty() }?.average(),
+                    totalMorningSteps =
+                        morningStepsList.takeIf { it.isNotEmpty() }?.sum(),
+                    totalNoonSteps =
+                        noonStepsList.takeIf { it.isNotEmpty() }?.sum(),
+                    totalRunningDistance = runningDistanceList.takeIf { it.isNotEmpty() }?.sum(),
+                    totalCyclingDistance = cyclingDistanceList.takeIf { it.isNotEmpty() }?.sum()
                 )
             }
         }
