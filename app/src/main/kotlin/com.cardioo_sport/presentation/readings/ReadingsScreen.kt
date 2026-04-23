@@ -43,7 +43,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
@@ -331,16 +330,13 @@ private fun MeasurementCard(
                 modifier = Modifier
                     .padding(
                         start = RowProps.measurementStartPadding,
-                        top = 10.dp,
+                        top = 5.dp,
                         RowProps.measurementEndPadding,
-                        bottom = 5.dp
                     )
                     .weight(RowProps.measurementWeight),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Row(
-                    modifier = Modifier
-                        .padding(top = 5.dp, bottom = 2.dp),
                     verticalAlignment = Alignment.CenterVertically,
 
                     ) {
@@ -348,23 +344,25 @@ private fun MeasurementCard(
                         modifier = Modifier.weight(RowProps.walkingWeight),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        val stepText =
-                            formattedStepsText(measurement = measurement)
-                        TextWithResizableFont(stepText)
-
+                        if (measurement.morningSteps != null) {
+                            TextLarge(formatSteps(measurement.morningSteps))
+                        }
+                        if (measurement.noonSteps != null) {
+                            TextLarge(formatSteps(measurement.noonSteps))
+                        }
                     }
                     Column(
                         modifier = Modifier.weight(RowProps.runningWeight),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        TextWithResizableFont(measurement.runningDistance?.let { format.format(it) }
+                        TextLarge(measurement.runningDistance?.let { format.format(it) }
                             ?: stringResource(R.string.value_empty))
                     }
                     Column(
                         modifier = Modifier.weight(RowProps.cyclingWeight),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        TextWithResizableFont(measurement.cyclingDistance?.let { format.format(it) }
+                        TextLarge(measurement.cyclingDistance?.let { format.format(it) }
                             ?: stringResource(R.string.value_empty))
                     }
                     Column(
@@ -400,40 +398,20 @@ private fun MeasurementCard(
 }
 
 @Composable
-private fun formattedStepsText(measurement: SportMeasurement): String {
-    return when {
-        measurement.morningSteps != null && measurement.noonSteps != null -> stringResource(
-            R.string.format_steps,
-            formatSteps(measurement.morningSteps), formatSteps(measurement.noonSteps)
-        )
-
-        measurement.morningSteps != null -> formatSteps(measurement.morningSteps)
-        measurement.noonSteps != null -> formatSteps(measurement.noonSteps)
-        else -> stringResource(R.string.value_empty)
-    }
-}
-
-
-@Composable
-private fun TextWithResizableFont(text: String) {
-    val textStyle: TextStyle =
-        when (text.length) {
-            in 0..11 -> MaterialTheme.typography.titleLarge
-            else -> MaterialTheme.typography.titleMedium
-        }
+private fun TextLarge(text: String) {
     Text(
         text,
-        style = textStyle,
+        style = MaterialTheme.typography.titleLarge,
     )
 }
 
 private object RowProps {
     const val dateWeight = 18F
     const val measurementWeight = 82F
-    const val walkingWeight = 38F
+    const val walkingWeight = 33F
     const val runningWeight = 25F
-    const val cyclingWeight = 25F
-    const val stretchingWeight = 12F
+    const val cyclingWeight = 26F
+    const val stretchingWeight = 16F
     val dateStartPadding = 5.dp
     val dateEndPadding = 10.dp
     val measurementStartPadding = 7.dp

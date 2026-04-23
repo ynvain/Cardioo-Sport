@@ -65,7 +65,6 @@
     <string name="gender_female">Female</string>
     <string name="cd_measurement_menu">Menu</string>
     <string name="format_steps_short_form">%1$sk</string>
-    <string name="format_steps">%1$s / %2$s</string>
     <string name="format_pulse_bpm">%1$d</string>
     <string name="format_weight_with_unit">%1$s %2$s</string>
     <string name="cd_export_csv">Export CSV</string>
