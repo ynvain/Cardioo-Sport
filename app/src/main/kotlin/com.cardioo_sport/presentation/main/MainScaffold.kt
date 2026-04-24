@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Assessment
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Insights
@@ -50,6 +51,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
+import com.cardioo_sport.presentation.calendar.CalendarScreen
 import com.cardioo_sport.presentation.chart.ChartScreen
 import com.cardioo_sport.presentation.readings.ReadingsScreen
 import com.cardioo_sport.presentation.readings.ReadingsViewModel
@@ -100,7 +102,8 @@ fun MainScaffold(
                                     when (tab) {
                                         0 -> R.string.title_readings
                                         1 -> R.string.title_statistics
-                                        else -> R.string.title_chart
+                                        2 -> R.string.title_chart
+                                        else -> R.string.title_calendar
                                     },
                                 ),
                             )
@@ -228,6 +231,12 @@ fun MainScaffold(
                         icon = { Icon(Icons.Filled.Insights, contentDescription = null) },
                         label = { Text(stringResource(R.string.cd_nav_chart)) },
                     )
+                    NavigationBarItem(
+                        selected = tab == 3,
+                        onClick = { tab = 3 },
+                        icon = { Icon(Icons.Filled.CalendarMonth, contentDescription = null) },
+                        label = { Text(stringResource(R.string.cd_nav_calendar)) },
+                    )
                 }
             }
         },
@@ -263,6 +272,11 @@ fun MainScaffold(
                         icon = { Icon(Icons.Filled.Insights, contentDescription = null) },
                         label = { Text(stringResource(R.string.cd_nav_chart)) },
                     )
+                    NavigationRailItem(
+                        selected = tab == 3,
+                        onClick = { tab = 3 },
+                        icon = { Icon(Icons.Filled.CalendarMonth, contentDescription = null) },
+                        label = { Text(stringResource(R.string.cd_nav_calendar)) })
                 }
                 when (tab) {
                     0 -> ReadingsScreen(
@@ -272,7 +286,8 @@ fun MainScaffold(
                     )
 
                     1 -> StatisticsScreen(contentPadding = PaddingValues(0.dp))
-                    else -> ChartScreen(contentPadding = PaddingValues(0.dp))
+                    2 -> ChartScreen(contentPadding = PaddingValues(0.dp))
+                    else -> CalendarScreen(contentPadding = PaddingValues(0.dp))
                 }
             }
         } else {
@@ -284,7 +299,8 @@ fun MainScaffold(
                 )
 
                 1 -> StatisticsScreen(contentPadding = padding)
-                else -> ChartScreen(contentPadding = padding)
+                2 -> ChartScreen(contentPadding = padding)
+                else -> CalendarScreen(contentPadding = padding)
             }
         }
     }

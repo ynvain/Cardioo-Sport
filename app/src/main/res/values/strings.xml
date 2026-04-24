@@ -17,6 +17,7 @@
     <string name="title_readings">Readings</string>
     <string name="title_statistics">Statistics</string>
     <string name="title_chart">Chart</string>
+    <string name="title_calendar">Calendar</string>
     <string name="title_settings_profile">Settings &amp; Profile</string>
     <string name="title_manage_accounts">Manage accounts</string>
     <string name="title_add_reading">Add reading</string>
@@ -26,6 +27,7 @@
     <string name="cd_nav_readings">Readings</string>
     <string name="cd_nav_statistics">Statistics</string>
     <string name="cd_nav_chart">Chart</string>
+    <string name="cd_nav_calendar">Calendar</string>
     <string name="cd_accounts_menu">Accounts</string>
     <string name="account_current_format">Current: %1$s</string>
     <string name="account_default_name">Account</string>
