@@ -65,5 +65,20 @@ class MeasurementRepositoryImpl @Inject constructor(
         val userId = session.currentAccountId.first() ?: return
         dao.deleteByIdForUser(id, userId)
     }
+
+    override suspend fun getInTimestampRangeForUser(
+        startTimestamp: Long,
+        finishTimestamp: Long
+    ): List<SportMeasurement> {
+        val userId = session.currentAccountId.first() ?: return emptyList()
+        val entities =
+            dao.getInTimestampRangeForUser(
+                userId = userId,
+                startTimestamp = startTimestamp,
+                finishTimestamp = finishTimestamp,
+            )
+
+        return entities.map { it.toDomain() }
+    }
 }
 

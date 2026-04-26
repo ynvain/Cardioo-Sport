@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface MeasurementRepository {
     fun observeAll(): Flow<List<SportMeasurement>>
     fun observeCount(): Flow<Int>
+
     /**
      * Cursor-based paging for the readings list.
      *
@@ -17,8 +18,14 @@ interface MeasurementRepository {
         beforeTimestampEpochMillis: Long? = null,
         beforeId: Long? = null,
     ): List<SportMeasurement>
+
     suspend fun getById(id: Long): SportMeasurement?
     suspend fun upsert(measurement: SportMeasurement): Long
     suspend fun delete(id: Long)
+
+    suspend fun getInTimestampRangeForUser(
+        startTimestamp: Long,
+        finishTimestamp: Long
+    ): List<SportMeasurement>
 }
 

@@ -20,8 +20,8 @@ interface SportMeasurementDao {
      */
     @Query(
         "SELECT * FROM sport_measurement WHERE userId = :userId " +
-            "ORDER BY timestampEpochMillis DESC, id DESC " +
-            "LIMIT :limit",
+                "ORDER BY timestampEpochMillis DESC, id DESC " +
+                "LIMIT :limit",
     )
     suspend fun getFirstPageForUser(userId: Long, limit: Int): List<SportMeasurementEntity>
 
@@ -34,9 +34,9 @@ interface SportMeasurementDao {
      */
     @Query(
         "SELECT * FROM sport_measurement WHERE userId = :userId AND " +
-            "(timestampEpochMillis < :beforeTimestamp OR (timestampEpochMillis = :beforeTimestamp AND id < :beforeId)) " +
-            "ORDER BY timestampEpochMillis DESC, id DESC " +
-            "LIMIT :limit",
+                "(timestampEpochMillis < :beforeTimestamp OR (timestampEpochMillis = :beforeTimestamp AND id < :beforeId)) " +
+                "ORDER BY timestampEpochMillis DESC, id DESC " +
+                "LIMIT :limit",
     )
     suspend fun getNextPageForUser(
         userId: Long,
@@ -56,5 +56,17 @@ interface SportMeasurementDao {
 
     @Query("DELETE FROM sport_measurement WHERE id = :id AND userId = :userId")
     suspend fun deleteByIdForUser(id: Long, userId: Long)
+
+
+    @Query(
+        "SELECT * FROM sport_measurement WHERE userId = :userId AND " +
+                "(timestampEpochMillis >= :startTimestamp and timestampEpochMillis <= :finishTimestamp) " +
+                "ORDER BY timestampEpochMillis DESC, id DESC "
+    )
+    suspend fun getInTimestampRangeForUser(
+        userId: Long,
+        startTimestamp: Long,
+        finishTimestamp: Long
+    ): List<SportMeasurementEntity>
 }
 
