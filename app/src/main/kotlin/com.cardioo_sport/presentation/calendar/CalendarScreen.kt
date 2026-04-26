@@ -81,15 +81,13 @@ fun CalendarScreen(
     Column(
         modifier = Modifier
             .padding(contentPadding)
-            .fillMaxSize(), verticalArrangement = Arrangement.spacedBy(8.dp)
+            .fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        MonthAndWeekHeader(daysOfWeek, currentMonth)
         HorizontalCalendar(
             state = calendarState,
             dayContent = { Day(it, state, isLandscape) },
-            monthHeader = { month ->
-                val daysOfWeek = month.weekDays.first().map { it.date.dayOfWeek }
-                MonthHeader(daysOfWeek = daysOfWeek, month.yearMonth)
-            }
+
         )
     }
 }
@@ -107,13 +105,12 @@ fun Day(day: CalendarDay, state: CalendarViewModel.State, isLandscape: Boolean) 
 
 
 @Composable
-private fun MonthHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
+private fun MonthAndWeekHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
-
         Text(
             text = yearMonth.month.getDisplayName(
                 TextStyle.FULL,
@@ -152,7 +149,6 @@ private fun DayContainer(day: CalendarDay, state: CalendarViewModel.State) {
             modifier = Modifier
                 .size(40.dp)
                 .border(1.dp, getColor(sportMeasurement), CircleShape)
-                .padding(1.dp)
                 .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
