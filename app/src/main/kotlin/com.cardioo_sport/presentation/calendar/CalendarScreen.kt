@@ -145,8 +145,8 @@ private fun MonthHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
 private fun DayContainer(day: CalendarDay, state: CalendarViewModel.State) {
     val sportMeasurement: SportMeasurement? =
         state.measurements[day.date.yearMonth]?.get(day.date.toKotlinLocalDate())
-    if (sportMeasurement == null) {
-        Text(text = day.date.dayOfMonth.toString(), color = dayColor(day, null))
+    if (sportMeasurement == null || day.position != DayPosition.MonthDate) {
+        Text(text = day.date.dayOfMonth.toString(), color = dayColor(day, sportMeasurement))
     } else {
         Box(
             modifier = Modifier
