@@ -1,5 +1,6 @@
 package com.cardioo_sport.presentation.calendar
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -61,6 +63,8 @@ fun CalendarScreen(
     )
 
     val currentMonth by remember { derivedStateOf { calendarState.firstVisibleMonth.yearMonth } }
+    val isLandscape =
+        LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     LaunchedEffect(Unit) {
         vm.clear()
@@ -77,7 +81,7 @@ fun CalendarScreen(
     ) {
         HorizontalCalendar(
             state = calendarState,
-            dayContent = { Day(it, state) },
+            dayContent = { Day(it, state, isLandscape) },
             monthHeader = { month ->
                 val daysOfWeek = month.weekDays.first().map { it.date.dayOfWeek }
                 MonthHeader(daysOfWeek = daysOfWeek, month.yearMonth)
@@ -87,10 +91,10 @@ fun CalendarScreen(
 }
 
 @Composable
-fun Day(day: CalendarDay, state: CalendarViewModel.State) {
+fun Day(day: CalendarDay, state: CalendarViewModel.State, isLandscape: Boolean) {
     Box(
         modifier = Modifier
-            .aspectRatio(1f), // This is important for square sizing!
+            .aspectRatio(if (isLandscape) 2.4f else 1f), // This is important for square sizing!
         contentAlignment = Alignment.Center
     ) {
         Text(text = day.date.dayOfMonth.toString(), color = getDayColor(day, state))
@@ -101,7 +105,7 @@ fun Day(day: CalendarDay, state: CalendarViewModel.State) {
 @Composable
 private fun MonthHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start
     ) {
