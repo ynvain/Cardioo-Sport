@@ -1,6 +1,5 @@
 package com.cardioo_sport.presentation.calendar
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,20 +30,14 @@ import com.cardioo_sport.presentation.util.scoreColor
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
-import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.ExperimentalCalendarApi
 import com.kizitonwose.calendar.core.daysOfWeek
+import com.kizitonwose.calendar.core.yearMonth
 import kotlinx.datetime.toKotlinLocalDate
 import java.time.DayOfWeek
 import java.time.YearMonth
-import java.time.ZoneId
 import java.time.format.TextStyle
 import java.util.Locale
-
-
-var prevCount = 0
-
-var count = 0
 
 
 @OptIn(ExperimentalCalendarApi::class)
@@ -58,11 +51,7 @@ fun CalendarScreen(
     val startMonth = remember { state.currentMonth.minusMonths(100) } // Adjust as needed
     val endMonth = remember { state.currentMonth.plusMonths(100) } // Adjust as needed
     val daysOfWeek = remember { daysOfWeek() } // Available from the library
-    val curr = remember { daysOfWeek() }
 
-    // Available from the library
-    prevCount = 0
-    count = 0
     val calendarState = rememberCalendarState(
         startMonth = startMonth,
         endMonth = endMonth,
@@ -71,6 +60,10 @@ fun CalendarScreen(
     )
 
     val currentMonth by remember { derivedStateOf { calendarState.firstVisibleMonth.yearMonth } }
+
+    LaunchedEffect(Unit) {
+        vm.clear()
+    }
 
     LaunchedEffect(currentMonth) {
         vm.load(currentMonth)
@@ -85,36 +78,11 @@ fun CalendarScreen(
             state = calendarState,
             dayContent = { Day(it, state) },
             monthHeader = { month ->
-                Log.d("TAG", "---------------------")
-                // You may want to use `remember {}` here so the mapping is not done
-                // every time as the days of week order will never change unless
-                // you set a new value for `firstDayOfWeek` in the state.
                 val daysOfWeek = month.weekDays.first().map { it.date.dayOfWeek }
                 MonthHeader(daysOfWeek = daysOfWeek, month.yearMonth)
             }
         )
     }
-    /*
-    Column(modifier = Modifier.padding(top = 50.dp).fillMaxSize(),) {
-        HorizontalCalendar (
-            state = calendarState,
-            dayContent = { calendarDay: CalendarDay ->
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                    ,
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(text = calendarDay.date.dayOfMonth.toString(), color = Color.White)
-                }},
-            monthHeader = { month ->
-                // You can also customize the month header here
-                Text(text = month.yearMonth.month.name, style = MaterialTheme.typography.titleLarge,)
-            }
-        )
-    }*/
-
-
 }
 
 @Composable
@@ -164,16 +132,13 @@ private fun MonthHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
 }
 
 private fun getDayColor(day: CalendarDay, state: CalendarViewModel.State): Color {
-    val timestamp =
-        day.date.atStartOfDay(ZoneId.systemDefault())
-            .toInstant()
-            .toEpochMilli()// Add t
+    if (day.date.yearMonth != state.currentMonth) {
+        return Color.Gray
+    }
     val sportMeasurement: SportMeasurement =
-        state.measurements[day.date.toKotlinLocalDate()] ?: return Color.White
-
+        state.measurements[day.date.yearMonth]?.get(day.date.toKotlinLocalDate())
+            ?: return Color.White
     val exerciseScore = exerciseScore(sportMeasurement)
-    count++
-    if (day.position != DayPosition.MonthDate) Color.Gray
     return scoreColor(exerciseScore)
 }
 

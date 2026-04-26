@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
@@ -27,16 +28,16 @@ import javax.inject.Inject
 class CalendarViewModel @Inject constructor(
     observeProfile: ObserveProfile,
     private val measurementRepository:
-    MeasurementRepository
+    MeasurementRepository,
 ) : ViewModel() {
     private val measurements =
-        MutableStateFlow<MutableMap<LocalDate, SportMeasurement>>(mutableMapOf())
+        MutableStateFlow<Map<YearMonth, Map<LocalDate, SportMeasurement>>>(emptyMap())
 
     private val currentMonth = MutableStateFlow<YearMonth>(YearMonth.now())
     private var activeAccountId: Long? = null
 
     data class State(
-        val measurements: Map<LocalDate, SportMeasurement> = emptyMap(),
+        val measurements: Map<YearMonth, Map<LocalDate, SportMeasurement>> = emptyMap(),
         val currentMonth: YearMonth = YearMonth.now(),
         val profile: UserProfile? = null,
     )
@@ -59,29 +60,45 @@ class CalendarViewModel @Inject constructor(
                 .collect { accountId ->
                     // On account switch we reset list state before loading data for the new account.
                     activeAccountId = accountId
-                    measurements.value = mutableMapOf()
+                    clear()
+                    load()
                 }
-
         }
     }
 
+    fun clear() {
+        measurements.value = emptyMap()
+    }
 
-    fun load(currentMonth: YearMonth) {
+    fun load(newMonth: YearMonth = currentMonth.value) {
+        if (newMonth != currentMonth.value) {
+            currentMonth.value = newMonth
+        }
+        if (measurements.value.containsKey(newMonth)) {
+            return
+        }
         viewModelScope.launch {
             val startTimestamp =
-                currentMonth.minusMonths(1).atDay(1).atStartOfDay(ZoneId.systemDefault())
+                newMonth.atDay(1).atStartOfDay(ZoneId.systemDefault())
                     .toInstant()
-                    .toEpochMilli()// Add t
+                    .toEpochMilli()
             val endTimestamp =
-                currentMonth.atEndOfMonth().plusDays(1).atStartOfDay(ZoneId.systemDefault())
+                newMonth.atEndOfMonth().plusDays(1).atStartOfDay(ZoneId.systemDefault())
                     .toInstant()
                     .toEpochMilli()
             val list =
                 measurementRepository.getInTimestampRangeForUser(startTimestamp, endTimestamp)
-            list.forEach { measurements.value[toLocalDate(it.timestampEpochMillis)] = it }
+            if (list.isNotEmpty()) {
+                measurements.update { it ->
+                    val mutableMap = it.toMutableMap()
+                    val monthMap =
+                        list.associateBy({ toLocalDate(it.timestampEpochMillis) }, { it })
+                    mutableMap[newMonth] = monthMap
+                    mutableMap
+                }
+            }
         }
     }
-
 
     fun toLocalDate(timestampEpochMillis: Long) =
         Instant.fromEpochMilliseconds(timestampEpochMillis)
