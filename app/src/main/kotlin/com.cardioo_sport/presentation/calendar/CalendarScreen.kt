@@ -1,6 +1,7 @@
 package com.cardioo_sport.presentation.calendar
 
 import android.content.res.Configuration
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -20,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
@@ -94,10 +98,10 @@ fun CalendarScreen(
 fun Day(day: CalendarDay, state: CalendarViewModel.State, isLandscape: Boolean) {
     Box(
         modifier = Modifier
-            .aspectRatio(if (isLandscape) 2.4f else 1f), // This is important for square sizing!
+            .aspectRatio(if (isLandscape) 2.4f else 1f),  // This is important for square sizing!
         contentAlignment = Alignment.Center
     ) {
-        Text(text = day.date.dayOfMonth.toString(), color = getDayColor(day, state))
+        DayContainer(day, state)
     }
 }
 
@@ -136,12 +140,37 @@ private fun MonthHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
     }
 }
 
-private fun getDayColor(day: CalendarDay, state: CalendarViewModel.State): Color {
-    if (day.position != DayPosition.MonthDate) return Color.Gray
-    val sportMeasurement: SportMeasurement =
+
+@Composable
+private fun DayContainer(day: CalendarDay, state: CalendarViewModel.State) {
+    val sportMeasurement: SportMeasurement? =
         state.measurements[day.date.yearMonth]?.get(day.date.toKotlinLocalDate())
-            ?: return Color.White
+    if (sportMeasurement == null) {
+        Text(text = day.date.dayOfMonth.toString(), color = getDayColor(day, null))
+    } else {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .border(1.dp, getColor(sportMeasurement), CircleShape)
+                .padding(1.dp)
+                .clip(CircleShape),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(text = day.date.dayOfMonth.toString(), color = getDayColor(day, sportMeasurement))
+        }
+    }
+
+}
+
+
+private fun getDayColor(day: CalendarDay, sportMeasurement: SportMeasurement?): Color {
+    if (day.position != DayPosition.MonthDate) return Color.Gray
+    sportMeasurement ?: return Color.White
+    return getColor(sportMeasurement)
+}
+
+
+private fun getColor(sportMeasurement: SportMeasurement): Color {
     val exerciseScore = exerciseScore(sportMeasurement)
     return scoreColor(exerciseScore)
 }
-
