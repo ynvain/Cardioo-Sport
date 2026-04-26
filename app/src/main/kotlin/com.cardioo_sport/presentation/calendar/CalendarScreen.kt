@@ -119,9 +119,9 @@ private fun MonthHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
                 TextStyle.FULL,
                 Locale.getDefault()
             ) + " " + yearMonth.year,
-            color = Color.White,
             modifier = Modifier.padding(start = 15.dp),
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Row(
             modifier = Modifier
@@ -133,7 +133,7 @@ private fun MonthHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.Center,
                     text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -146,7 +146,7 @@ private fun DayContainer(day: CalendarDay, state: CalendarViewModel.State) {
     val sportMeasurement: SportMeasurement? =
         state.measurements[day.date.yearMonth]?.get(day.date.toKotlinLocalDate())
     if (sportMeasurement == null) {
-        Text(text = day.date.dayOfMonth.toString(), color = getDayColor(day, null))
+        Text(text = day.date.dayOfMonth.toString(), color = dayColor(day, null))
     } else {
         Box(
             modifier = Modifier
@@ -156,16 +156,17 @@ private fun DayContainer(day: CalendarDay, state: CalendarViewModel.State) {
                 .clip(CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            Text(text = day.date.dayOfMonth.toString(), color = getDayColor(day, sportMeasurement))
+            Text(text = day.date.dayOfMonth.toString(), color = dayColor(day, sportMeasurement))
         }
     }
 
 }
 
 
-private fun getDayColor(day: CalendarDay, sportMeasurement: SportMeasurement?): Color {
+@Composable
+private fun dayColor(day: CalendarDay, sportMeasurement: SportMeasurement?): Color {
     if (day.position != DayPosition.MonthDate) return Color.Gray
-    sportMeasurement ?: return Color.White
+    sportMeasurement ?: return MaterialTheme.colorScheme.onSurfaceVariant
     return getColor(sportMeasurement)
 }
 
