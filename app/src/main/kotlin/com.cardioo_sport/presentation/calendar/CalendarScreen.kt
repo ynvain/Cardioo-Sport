@@ -30,6 +30,7 @@ import com.cardioo_sport.presentation.util.scoreColor
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.ExperimentalCalendarApi
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.yearMonth
@@ -132,9 +133,7 @@ private fun MonthHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
 }
 
 private fun getDayColor(day: CalendarDay, state: CalendarViewModel.State): Color {
-    if (day.date.yearMonth != state.currentMonth) {
-        return Color.Gray
-    }
+    if (day.position != DayPosition.MonthDate) return Color.Gray
     val sportMeasurement: SportMeasurement =
         state.measurements[day.date.yearMonth]?.get(day.date.toKotlinLocalDate())
             ?: return Color.White
