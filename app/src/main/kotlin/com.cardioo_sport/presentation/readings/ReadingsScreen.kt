@@ -344,11 +344,11 @@ private fun MeasurementCard(
                         modifier = Modifier.weight(RowProps.walkingWeight),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
-                        if (measurement.morningSteps != null) {
-                            TextLarge(formatSteps(measurement.morningSteps))
-                        }
-                        if (measurement.noonSteps != null) {
-                            TextLarge(formatSteps(measurement.noonSteps))
+                        if (measurement.morningSteps != null || measurement.noonSteps != null) {
+                            measurement.morningSteps?.let { TextLarge(formatSteps(it)) }
+                            measurement.noonSteps?.let { TextLarge(formatSteps(it)) }
+                        } else {
+                            TextLarge(stringResource(R.string.value_empty))
                         }
                     }
                     Column(
