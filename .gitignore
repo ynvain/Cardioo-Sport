@@ -1,5 +1,6 @@
 /build
 
+/.idea
 /.idea/AndroidProjectSystem.xml
 /.gradle/buildOutputCleanup/buildOutputCleanup.lock
 /.gradle/buildOutputCleanup/cache.properties
