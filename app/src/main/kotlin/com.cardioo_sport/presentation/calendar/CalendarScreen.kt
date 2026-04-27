@@ -2,6 +2,7 @@ package com.cardioo_sport.presentation.calendar
 
 import android.content.res.Configuration
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,13 +14,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Text
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +35,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.domain.model.exerciseScore
@@ -65,11 +72,11 @@ fun CalendarScreen(
         firstVisibleMonth = initialMonth,
         firstDayOfWeek = daysOfWeek.first()
     )
-
+    val showDialog = remember { mutableStateOf(false) }
+    val clickedMeasurement = remember { mutableStateOf<SportMeasurement?>(null) }
     val currentMonth by remember { derivedStateOf { calendarState.firstVisibleMonth.yearMonth } }
     val isLandscape =
         LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
-
     LaunchedEffect(Unit) {
         vm.clear()
     }
@@ -86,18 +93,64 @@ fun CalendarScreen(
         MonthAndWeekHeader(daysOfWeek, currentMonth)
         HorizontalCalendar(
             state = calendarState,
-            dayContent = { Day(it, state, isLandscape) },
+            dayContent = { Day(it, state, isLandscape, clickedMeasurement) },
+        )
+    }
 
+    val sportMeasurement: SportMeasurement? = clickedMeasurement.value
+    sportMeasurement?.let {
+        Dialog(
+            onDismissRequest = { clickedMeasurement.value = null },
+            content = {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        //       .height(200.dp)
+                        .padding(5.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                ) {
+                    Column(
+                        modifier = Modifier.padding(all = 5.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "This is a custom minimal dialog",
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = it.id.toString(),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+            }
         )
     }
 }
 
 @Composable
-fun Day(day: CalendarDay, state: CalendarViewModel.State, isLandscape: Boolean) {
+fun Day(
+    day: CalendarDay,
+    state: CalendarViewModel.State,
+    isLandscape: Boolean,
+    clickedMeasurement: MutableState<SportMeasurement?>
+) {
+    val sportMeasurement: SportMeasurement? =
+        state.measurements[day.date.yearMonth]?.get(day.date.toKotlinLocalDate())
     Box(
         modifier = Modifier
-            .aspectRatio(if (isLandscape) 2.4f else 1f),  // This is important for square sizing!
+            .aspectRatio(if (isLandscape) 2.4f else 1f)
+            .clickable(
+                enabled = day.position == DayPosition.MonthDate && sportMeasurement != null,
+                onClick = { clickedMeasurement.value = sportMeasurement }
+            ),  // This is important for square sizing!
         contentAlignment = Alignment.Center
+
     ) {
         DayContainer(day, state)
     }
