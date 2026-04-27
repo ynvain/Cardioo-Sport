@@ -1,7 +1,6 @@
 package com.cardioo_sport.presentation.entry
 
 
-import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -33,7 +32,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -48,10 +49,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.presentation.util.formatLocalizedDate
-import com.cardioo_sport.presentation.util.formatLocalizedTime
 import com.cardioo_sport.presentation.util.scoreColor
 import java.text.DecimalFormat
-import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,6 +63,8 @@ fun MeasurementEntryScreen(
     val context = LocalContext.current
     val format = DecimalFormat("#.#")
     val focusMorningSteps = remember { FocusRequester() }
+    var showDobPicker by remember { mutableStateOf(false) }
+    val datePickerState = androidx.compose.material3.rememberDatePickerState()
 
 
     LaunchedEffect(measurementId) {
@@ -74,10 +75,6 @@ fun MeasurementEntryScreen(
         if (!state.loading && measurementId == null) focusMorningSteps.requestFocus()
     }
 
-    val datePart =
-        remember(state.timestampEpochMillis) { formatLocalizedDate(state.timestampEpochMillis) }
-    val timePart =
-        remember(state.timestampEpochMillis) { formatLocalizedTime(state.timestampEpochMillis) }
     val exerciseScore = vm.computedExerciseScore()
     Scaffold(
         topBar = {
@@ -112,23 +109,8 @@ fun MeasurementEntryScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 OutlinedButton(
-                    onClick = {
-                        val cal = Calendar.getInstance()
-                            .apply { timeInMillis = state.timestampEpochMillis }
-                        DatePickerDialog(
-                            context,
-                            { _, year, month, day ->
-                                cal.set(Calendar.YEAR, year)
-                                cal.set(Calendar.MONTH, month)
-                                cal.set(Calendar.DAY_OF_MONTH, day)
-                                vm.setTimestamp(cal.timeInMillis)
-                            },
-                            cal.get(Calendar.YEAR),
-                            cal.get(Calendar.MONTH),
-                            cal.get(Calendar.DAY_OF_MONTH),
-                        ).show()
-                    },
-                ) { Text(datePart) }
+                    onClick = { showDobPicker = true },
+                ) { Text(formatLocalizedDate(state.timestampEpochMillis)) }
                 Box(
                     modifier = Modifier
                         .size(18.dp)
@@ -286,6 +268,29 @@ fun MeasurementEntryScreen(
             ) {
                 Text(stringResource(if (state.saving) R.string.state_saving else R.string.action_save))
             }
+        }
+    }
+    if (showDobPicker) {
+        androidx.compose.material3.DatePickerDialog(
+            onDismissRequest = { showDobPicker = false },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        val millis = datePickerState.selectedDateMillis
+                        millis?.let {
+                            vm.setTimestamp(it)
+                        }
+                        showDobPicker = false
+                    },
+                ) { Text(stringResource(R.string.action_ok)) }
+            },
+            dismissButton = {
+                OutlinedButton(onClick = {
+                    showDobPicker = false
+                }) { Text(stringResource(R.string.action_cancel)) }
+            },
+        ) {
+            androidx.compose.material3.DatePicker(state = datePickerState)
         }
     }
 }
