@@ -1,6 +1,7 @@
 package com.cardioo_sport.presentation.calendar
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,14 +33,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.domain.model.exerciseScore
+import com.cardioo_sport.presentation.util.formatLocalizedDate
 import com.cardioo_sport.presentation.util.scoreColor
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
@@ -104,34 +111,102 @@ fun CalendarScreen(
             content = {
                 Card(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        //       .height(200.dp)
                         .padding(5.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 ) {
-                    Column(
-                        modifier = Modifier.padding(all = 5.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = "This is a custom minimal dialog",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(
-                                text = it.id.toString(),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                        }
-                    }
+                    DayCardContent(it)
                 }
             }
         )
     }
 }
+
+@Composable
+fun DayCardContent(measurement: SportMeasurement) {
+    Column(
+        modifier = Modifier.padding(all = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 5.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = formatLocalizedDate(measurement.timestampEpochMillis),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Box(
+                modifier = Modifier
+                    .size(14.dp)
+                    .background(scoreColor(exerciseScore(measurement)), shape = CircleShape),
+            )
+        }
+        if (measurement.morningSteps != null || measurement.noonSteps != null) {
+            val steps = (measurement.morningSteps ?: 0) + (measurement.noonSteps ?: 0)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_walk),
+                    contentDescription = "Walk Icon",
+                    modifier = Modifier.size(25.dp)
+                )
+                Text(
+                    text = steps.toString(),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        measurement.runningDistance?.let {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_run),
+                    contentDescription = "Run Icon",
+                    modifier = Modifier.size(25.dp)
+                )
+                Text(
+                    text = stringResource(R.string.format_distance, it),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        measurement.cyclingDistance?.let {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_bike),
+                    contentDescription = "Bike Icon",
+                    modifier = Modifier.size(25.dp)
+                )
+                Text(
+                    text = stringResource(R.string.format_distance, it),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+
+        }
+
+        if (measurement.stretching) {
+            Icon(
+                imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
+                contentDescription = "Stretch Icon",
+                modifier = Modifier.size(25.dp)
+            )
+        }
+    }
+}
+
 
 @Composable
 fun Day(
