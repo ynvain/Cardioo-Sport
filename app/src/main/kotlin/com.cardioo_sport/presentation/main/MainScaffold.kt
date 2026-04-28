@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.presentation.calendar.CalendarScreen
+import com.cardioo_sport.presentation.calendar.CalendarViewModel
 import com.cardioo_sport.presentation.chart.ChartScreen
 import com.cardioo_sport.presentation.readings.ReadingsScreen
 import com.cardioo_sport.presentation.readings.ReadingsViewModel
@@ -73,6 +74,7 @@ fun MainScaffold(
     val accountState by vm.state.collectAsState()
     val readingsVm: ReadingsViewModel = hiltViewModel()
     val readingsState by readingsVm.state.collectAsState()
+    val calendarVm: CalendarViewModel = hiltViewModel()
     val currentAccount =
         accountState.accounts.firstOrNull { it.id == accountState.currentAccountId }
     val defaultAccountName = stringResource(R.string.account_default_name)
@@ -81,6 +83,7 @@ fun MainScaffold(
 
     LaunchedEffect(tab) {
         if (tab != 0) readingsVm.clearSelection()
+        if (tab != 3) calendarVm.clear()
     }
 
     Scaffold(

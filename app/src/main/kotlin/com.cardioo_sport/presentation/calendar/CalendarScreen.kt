@@ -69,8 +69,8 @@ fun CalendarScreen(
 ) {
     val state by vm.state.collectAsState()
     val initialMonth = remember { YearMonth.now() }
-    val startMonth = remember { state.currentMonth.minusMonths(100) } // Adjust as needed
-    val endMonth = remember { state.currentMonth.plusMonths(100) } // Adjust as needed
+    val startMonth = remember { state.currentMonth.minusMonths(200) } // Adjust as needed
+    val endMonth = remember { state.currentMonth.plusMonths(1) } // Adjust as needed
     val daysOfWeek = remember { daysOfWeek() } // Available from the library
 
     val calendarState = rememberCalendarState(
@@ -79,25 +79,35 @@ fun CalendarScreen(
         firstVisibleMonth = initialMonth,
         firstDayOfWeek = daysOfWeek.first()
     )
-    val showDialog = remember { mutableStateOf(false) }
     val clickedMeasurement = remember { mutableStateOf<SportMeasurement?>(null) }
-    val currentMonth by remember { derivedStateOf { calendarState.firstVisibleMonth.yearMonth } }
+    val visibleMonth by remember { derivedStateOf { calendarState.firstVisibleMonth.yearMonth } }
     val isLandscape =
         LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+
     LaunchedEffect(Unit) {
-        vm.clear()
+        if (calendarState.firstVisibleMonth.yearMonth != vm.currentMonth.value) {
+            calendarState.scrollToMonth(vm.currentMonth.value)
+        }
     }
 
-    LaunchedEffect(currentMonth) {
-        vm.load(currentMonth)
+    LaunchedEffect(visibleMonth) {
+        vm.currentMonth.value = visibleMonth
+
     }
+
+    val currentMonth = state.currentMonth
+    LaunchedEffect(currentMonth) {
+        vm.load()
+    }
+
 
     Column(
         modifier = Modifier
             .padding(contentPadding)
             .fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        MonthAndWeekHeader(daysOfWeek, currentMonth)
+        MonthAndWeekHeader(daysOfWeek, visibleMonth)
         HorizontalCalendar(
             state = calendarState,
             dayContent = { Day(it, state, isLandscape, clickedMeasurement) },

@@ -33,7 +33,7 @@ class CalendarViewModel @Inject constructor(
     private val measurements =
         MutableStateFlow<Map<YearMonth, Map<LocalDate, SportMeasurement>>>(emptyMap())
 
-    private val currentMonth = MutableStateFlow<YearMonth>(YearMonth.now())
+    val currentMonth = MutableStateFlow<YearMonth>(YearMonth.now())
     private var activeAccountId: Long? = null
 
     data class State(
@@ -70,20 +70,17 @@ class CalendarViewModel @Inject constructor(
         measurements.value = emptyMap()
     }
 
-    fun load(newMonth: YearMonth = currentMonth.value) {
-        if (newMonth != currentMonth.value) {
-            currentMonth.value = newMonth
-        }
-        if (measurements.value.containsKey(newMonth)) {
+    fun load() {
+        if (measurements.value.containsKey(currentMonth.value)) {
             return
         }
         viewModelScope.launch {
             val startTimestamp =
-                newMonth.atDay(1).atStartOfDay(ZoneId.systemDefault())
+                currentMonth.value.atDay(1).atStartOfDay(ZoneId.systemDefault())
                     .toInstant()
                     .toEpochMilli()
             val endTimestamp =
-                newMonth.atEndOfMonth().plusDays(1).atStartOfDay(ZoneId.systemDefault())
+                currentMonth.value.atEndOfMonth().plusDays(1).atStartOfDay(ZoneId.systemDefault())
                     .toInstant()
                     .toEpochMilli()
             val list =
@@ -93,7 +90,7 @@ class CalendarViewModel @Inject constructor(
                     val mutableMap = it.toMutableMap()
                     val monthMap =
                         list.associateBy({ toLocalDate(it.timestampEpochMillis) }, { it })
-                    mutableMap[newMonth] = monthMap
+                    mutableMap[currentMonth.value] = monthMap
                     mutableMap
                 }
             }
