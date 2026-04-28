@@ -85,14 +85,14 @@ class CalendarViewModel @Inject constructor(
                     .toEpochMilli()
             val list =
                 measurementRepository.getInTimestampRangeForUser(startTimestamp, endTimestamp)
-            if (list.isNotEmpty()) {
-                measurements.update { it ->
-                    val mutableMap = it.toMutableMap()
-                    val monthMap =
+            measurements.update { it ->
+                val mutableMap = it.toMutableMap()
+                val monthMap =
+                    if (list.isNotEmpty())
                         list.associateBy({ toLocalDate(it.timestampEpochMillis) }, { it })
-                    mutableMap[currentMonth.value] = monthMap
-                    mutableMap
-                }
+                    else emptyMap()
+                mutableMap[currentMonth.value] = monthMap
+                mutableMap
             }
         }
     }
@@ -101,4 +101,6 @@ class CalendarViewModel @Inject constructor(
         Instant.fromEpochMilliseconds(timestampEpochMillis)
             .toLocalDateTime(TimeZone.currentSystemDefault())
             .date
+
 }
+
