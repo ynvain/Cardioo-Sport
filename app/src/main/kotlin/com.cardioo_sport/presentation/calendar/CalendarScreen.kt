@@ -99,6 +99,9 @@ fun CalendarScreen(
     val currentMonth = state.currentMonth
     LaunchedEffect(currentMonth) {
         vm.load()
+        if (calendarState.firstVisibleMonth.yearMonth != vm.currentMonth.value) {
+            calendarState.scrollToMonth(vm.currentMonth.value)
+        }
     }
 
 
