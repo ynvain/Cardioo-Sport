@@ -139,7 +139,7 @@ fun CalendarScreen(
 fun DayCardContent(measurement: SportMeasurement) {
     Column(
         modifier = Modifier.padding(all = 10.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -249,15 +249,17 @@ fun Day(
 private fun MonthAndWeekHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 5.dp),
+        horizontalAlignment = Alignment.Start,
     ) {
         Text(
             text = yearMonth.month.getDisplayName(
                 TextStyle.FULL,
                 Locale.getDefault()
             ) + " " + yearMonth.year,
-            modifier = Modifier.padding(start = 15.dp),
+            modifier = Modifier.padding(start = 10.dp),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
