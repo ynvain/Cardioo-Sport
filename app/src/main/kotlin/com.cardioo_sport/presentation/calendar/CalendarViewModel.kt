@@ -68,6 +68,7 @@ class CalendarViewModel @Inject constructor(
 
     fun clear() {
         measurements.value = emptyMap()
+        currentMonth.value = YearMonth.now()
     }
 
     fun load() {
