@@ -86,6 +86,8 @@
     <string name="range_week">Week</string>
     <string name="range_month">Month</string>
     <string name="range_six_months">6 months</string>
+    <string name="range_this_year">This year</string>
+    <string name="range_previous_year">Previous year</string>
     <string name="range_year">Year</string>
     <string name="range_all_time">All time</string>
     <string name="chart_metric_steps">Steps</string>

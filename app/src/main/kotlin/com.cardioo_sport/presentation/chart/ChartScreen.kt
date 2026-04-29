@@ -56,7 +56,9 @@ import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.presentation.theme.GreenPrimary
 import com.cardioo_sport.presentation.util.Orange
+import com.cardioo_sport.presentation.util.Range
 import com.cardioo_sport.presentation.util.Violet
+import com.cardioo_sport.presentation.util.filterByRange
 import java.text.DecimalFormat
 import java.time.Instant
 import java.time.ZoneId
@@ -82,11 +84,14 @@ fun ChartScreen(
 
     val periodLabel = stringResource(
         when (state.range) {
-            ChartViewModel.Range.Week -> R.string.range_week
-            ChartViewModel.Range.Month -> R.string.range_month
-            ChartViewModel.Range.SixMonths -> R.string.range_six_months
-            ChartViewModel.Range.Year -> R.string.range_year
-            ChartViewModel.Range.AllTime -> R.string.range_all_time
+            Range.Week -> R.string.range_week
+            Range.Month -> R.string.range_month
+            Range.SixMonths -> R.string.range_six_months
+            Range.ThisYear -> R.string.range_this_year
+            Range.PreviousYear -> R.string.range_previous_year
+            Range.Year -> R.string.range_year
+            Range.AllTime -> R.string.range_all_time
+
         },
     )
 
@@ -194,35 +199,49 @@ fun ChartScreen(
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.range_week)) },
                         onClick = {
-                            vm.setRange(ChartViewModel.Range.Week); rangeExpanded =
+                            vm.setRange(Range.Week); rangeExpanded =
                             false
                         },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.range_month)) },
                         onClick = {
-                            vm.setRange(ChartViewModel.Range.Month); rangeExpanded =
+                            vm.setRange(Range.Month); rangeExpanded =
                             false
                         },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.range_six_months)) },
                         onClick = {
-                            vm.setRange(ChartViewModel.Range.SixMonths); rangeExpanded =
+                            vm.setRange(Range.SixMonths); rangeExpanded =
+                            false
+                        },
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.range_this_year)) },
+                        onClick = {
+                            vm.setRange(Range.ThisYear); rangeExpanded =
+                            false
+                        },
+                    )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.range_previous_year)) },
+                        onClick = {
+                            vm.setRange(Range.PreviousYear); rangeExpanded =
                             false
                         },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.range_year)) },
                         onClick = {
-                            vm.setRange(ChartViewModel.Range.Year); rangeExpanded =
+                            vm.setRange(Range.Year); rangeExpanded =
                             false
                         },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.range_all_time)) },
                         onClick = {
-                            vm.setRange(ChartViewModel.Range.AllTime); rangeExpanded =
+                            vm.setRange(Range.AllTime); rangeExpanded =
                             false
                         },
                     )
@@ -304,7 +323,7 @@ fun ChartScreen(
 @Composable
 private fun SimpleLineChart(
     metric: ChartViewModel.Metric,
-    range: ChartViewModel.Range,
+    range: Range,
     measurements: List<SportMeasurement>,
     chartZoom: Float,
     yAxisLabel: String,
@@ -362,11 +381,13 @@ private fun SimpleLineChart(
     }.ifEmpty { listOf(minY, maxY) }
 
     val xTickCountByPeriod = when (range) {
-        ChartViewModel.Range.Week -> 7
-        ChartViewModel.Range.Month -> 6
-        ChartViewModel.Range.SixMonths -> 6
-        ChartViewModel.Range.Year -> 6
-        ChartViewModel.Range.AllTime -> 7
+        Range.Week -> 7
+        Range.Month -> 6
+        Range.SixMonths -> 6
+        Range.ThisYear -> 6
+        Range.PreviousYear -> 6
+        Range.Year -> 6
+        Range.AllTime -> 7
     }
 
     val xTickCount = if (chartZoom < 2) xTickCountByPeriod else xTickCountByPeriod * 2 - 1
@@ -597,18 +618,20 @@ private fun SimpleLineChart(
 
 
 private fun dateTimeFormatterForRange(
-    range: ChartViewModel.Range,
+    range: Range,
     locale: Locale,
     printYear: Boolean,
 ): DateTimeFormatter =
     when (range) {
-        ChartViewModel.Range.Week,
-        ChartViewModel.Range.Month,
+        Range.Week,
+        Range.Month,
             -> DateTimeFormatter.ofPattern("d MMM", locale)
 
-        ChartViewModel.Range.SixMonths,
-        ChartViewModel.Range.Year,
-        ChartViewModel.Range.AllTime,
+        Range.SixMonths,
+        Range.Year,
+        Range.AllTime,
+        Range.ThisYear,
+        Range.PreviousYear
             -> if (printYear) DateTimeFormatter.ofPattern(
             "MMM yyyy",
             locale
@@ -628,20 +651,4 @@ private fun niceStep(range: Double, maxTicks: Int): Double {
         else -> 10.0
     }
     return nice * mag
-}
-
-private fun filterByRange(
-    measurements: List<SportMeasurement>,
-    range: ChartViewModel.Range,
-): List<SportMeasurement> {
-    val days = when (range) {
-        ChartViewModel.Range.Week -> 7
-        ChartViewModel.Range.Month -> 30
-        ChartViewModel.Range.SixMonths -> 180
-        ChartViewModel.Range.Year -> 365
-        ChartViewModel.Range.AllTime -> Int.MAX_VALUE
-    }
-    if (range == ChartViewModel.Range.AllTime) return measurements
-    val cutoff = ZonedDateTime.now().minusDays(days.toLong()).toInstant().toEpochMilli()
-    return measurements.filter { it.timestampEpochMillis >= cutoff }
 }

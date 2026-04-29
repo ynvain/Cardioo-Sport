@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.domain.usecase.ObserveMeasurements
+import com.cardioo_sport.presentation.util.Range
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,12 +35,11 @@ class ChartViewModel @Inject constructor(
 
     data class State(
         val metric: Metric = Metric.Steps,
-        val range: Range = Range.Month,
+        val range: Range = Range.ThisYear,
         val measurements: List<SportMeasurement> = emptyList(),
     )
 
     enum class Metric { Steps, RunningDistance, CyclingDistance }
-    enum class Range { Week, Month, SixMonths, Year, AllTime }
 
     fun setMetric(v: Metric) = metric.update { v }
     fun setRange(v: Range) = range.update { v }

@@ -2,11 +2,15 @@ package com.cardioo_sport.presentation.statistics
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.ExerciseScore
 import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.domain.model.exerciseScore
 import com.cardioo_sport.domain.model.exerciseScoreCount
 import com.cardioo_sport.domain.usecase.ObserveMeasurements
+import com.cardioo_sport.presentation.util.Range
+import com.cardioo_sport.presentation.util.filterByRange
+import com.cardioo_sport.presentation.util.filterPrevByRange
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,29 +18,34 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import java.time.ZonedDateTime
 import javax.inject.Inject
+
 
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
     observeMeasurements: ObserveMeasurements,
 ) : ViewModel() {
-    private val range = MutableStateFlow(Range.Month)
+    private val range = MutableStateFlow(Range.ThisYear)
 
     val state: StateFlow<State> =
         combine(observeMeasurements(), range) { measurements, r ->
             val filtered = filterByRange(measurements, r)
             val filteredPrev =
-                if (r != Range.AllTime) filterPrevByRange(measurements, r) else emptyList()
+                filterPrevByRange(
+                    measurements,
+                    r
+                )
             val summary = Summary.from(filtered, filteredPrev)
             val table = TableStats.from(filtered)
 
             val periodLabelRes = when (r) {
-                Range.Week -> com.cardioo_sport.R.string.range_week
-                Range.Month -> com.cardioo_sport.R.string.range_month
-                Range.SixMonths -> com.cardioo_sport.R.string.range_six_months
-                Range.Year -> com.cardioo_sport.R.string.range_year
-                Range.AllTime -> com.cardioo_sport.R.string.range_all_time
+                Range.Week -> R.string.range_week
+                Range.Month -> R.string.range_month
+                Range.SixMonths -> R.string.range_six_months
+                Range.ThisYear -> R.string.range_this_year
+                Range.PreviousYear -> R.string.range_previous_year
+                Range.Year -> R.string.range_year
+                Range.AllTime -> R.string.range_all_time
             }
             State(
                 range = r,
@@ -53,7 +62,7 @@ class StatisticsViewModel @Inject constructor(
         val measurements: List<SportMeasurement> = emptyList(),
         val summary: Summary = Summary(),
         val table: TableStats = TableStats(),
-        val periodLabelRes: Int = com.cardioo_sport.R.string.range_month,
+        val periodLabelRes: Int = R.string.range_month,
     )
 
     data class Summary(
@@ -144,44 +153,8 @@ class StatisticsViewModel @Inject constructor(
         }
     }
 
-    enum class Range {
-        Week, Month, SixMonths, Year, AllTime
-    }
 
     fun setRange(v: Range) = range.update { v }
 
-    private fun filterByRange(
-        measurements: List<SportMeasurement>,
-        range: Range,
-    ): List<SportMeasurement> {
-        if (range == Range.AllTime) return measurements
-        val days = when (range) {
-            Range.Week -> 7
-            Range.Month -> 30
-            Range.SixMonths -> 180
-            Range.Year -> 365
-            else -> 0
-        }
-        val cutoff = ZonedDateTime.now().minusDays(days.toLong()).toInstant().toEpochMilli()
-        return measurements.filter { it.timestampEpochMillis >= cutoff }
-    }
-
-    // Filter measurements from prev period
-    private fun filterPrevByRange(
-        measurements: List<SportMeasurement>,
-        range: Range,
-    ): List<SportMeasurement> {
-        if (range == Range.AllTime) return measurements
-        val days = when (range) {
-            Range.Week -> 7
-            Range.Month -> 30
-            Range.SixMonths -> 180
-            Range.Year -> 365
-            else -> 0
-        }
-        val start = ZonedDateTime.now().minusDays(days.toLong()).toInstant().toEpochMilli()
-        val finish = ZonedDateTime.now().minusDays(2 * days.toLong()).toInstant().toEpochMilli()
-        return measurements.filter { it.timestampEpochMillis in finish..start }
-    }
 }
 

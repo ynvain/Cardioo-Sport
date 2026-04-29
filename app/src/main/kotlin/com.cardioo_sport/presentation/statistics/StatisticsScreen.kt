@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.SportMeasurement
+import com.cardioo_sport.presentation.util.Range
 import com.cardioo_sport.presentation.util.decimalFormat
 import com.cardioo_sport.presentation.util.formatSteps
 import com.cardioo_sport.presentation.util.scoreColor
@@ -116,35 +117,49 @@ fun StatisticsScreen(
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.range_week)) },
                                 onClick = {
-                                    vm.setRange(StatisticsViewModel.Range.Week); rangeExpanded =
+                                    vm.setRange(Range.Week); rangeExpanded =
                                     false
                                 },
                             )
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.range_month)) },
                                 onClick = {
-                                    vm.setRange(StatisticsViewModel.Range.Month); rangeExpanded =
+                                    vm.setRange(Range.Month); rangeExpanded =
                                     false
                                 },
                             )
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.range_six_months)) },
                                 onClick = {
-                                    vm.setRange(StatisticsViewModel.Range.SixMonths); rangeExpanded =
+                                    vm.setRange(Range.SixMonths); rangeExpanded =
+                                    false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.range_this_year)) },
+                                onClick = {
+                                    vm.setRange(Range.ThisYear); rangeExpanded =
+                                    false
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.range_previous_year)) },
+                                onClick = {
+                                    vm.setRange(Range.PreviousYear); rangeExpanded =
                                     false
                                 },
                             )
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.range_year)) },
                                 onClick = {
-                                    vm.setRange(StatisticsViewModel.Range.Year); rangeExpanded =
+                                    vm.setRange(Range.Year); rangeExpanded =
                                     false
                                 },
                             )
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.range_all_time)) },
                                 onClick = {
-                                    vm.setRange(StatisticsViewModel.Range.AllTime); rangeExpanded =
+                                    vm.setRange(Range.AllTime); rangeExpanded =
                                     false
                                 },
                             )
