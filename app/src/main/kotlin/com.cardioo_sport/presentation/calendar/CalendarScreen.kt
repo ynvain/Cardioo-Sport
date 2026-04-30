@@ -256,7 +256,7 @@ private fun MonthAndWeekHeader(daysOfWeek: List<DayOfWeek>, yearMonth: YearMonth
     ) {
         Text(
             text = yearMonth.month.getDisplayName(
-                TextStyle.FULL,
+                TextStyle.FULL_STANDALONE,
                 Locale.getDefault()
             ) + " " + yearMonth.year,
             modifier = Modifier.padding(start = 10.dp),
