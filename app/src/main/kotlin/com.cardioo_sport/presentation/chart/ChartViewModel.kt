@@ -18,7 +18,7 @@ class ChartViewModel @Inject constructor(
     observeMeasurements: ObserveMeasurements,
 ) : ViewModel() {
     private val metric = MutableStateFlow(Metric.Steps)
-    private val range = MutableStateFlow(Range.Month)
+    private val range = MutableStateFlow(Range.ThisYear)
 
     val state: StateFlow<State> =
         combine(observeMeasurements(), metric, range) { measurements, m, r ->

@@ -356,10 +356,9 @@ private fun SimpleLineChart(
         }
 
     val allValues = sorted.flatMap(::valuesFor).filterNotNull()
-    val minV = allValues.minOrNull() ?: 0.0
     val maxV = allValues.maxOrNull() ?: 1.0
-    val pad = (maxV - minV).takeIf { it > 0 }?.times(0.1) ?: 1.0
-    val minY = minV - pad
+    val pad = maxV.takeIf { it > 0 }?.times(0.1) ?: 1.0
+    val minY = 0.0
     val maxY = maxV + pad
 
     val minX = sorted.minOf { it.timestampEpochMillis }
@@ -377,7 +376,7 @@ private fun SimpleLineChart(
             add(yTick)
             yTick += yStep
         }
-        if (size > 5) removeAt(0)
+        if (size > 6) removeAt(0)
     }.ifEmpty { listOf(minY, maxY) }
 
     val xTickCountByPeriod = when (range) {
