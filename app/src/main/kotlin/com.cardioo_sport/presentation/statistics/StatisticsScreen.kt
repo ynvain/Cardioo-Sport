@@ -52,7 +52,7 @@ import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.presentation.util.Range
 import com.cardioo_sport.presentation.util.decimalFormat
-import com.cardioo_sport.presentation.util.formatSteps
+import com.cardioo_sport.presentation.util.formatBigSteps
 import com.cardioo_sport.presentation.util.scoreColor
 import kotlinx.coroutines.launch
 
@@ -381,7 +381,7 @@ private fun StatsTable(
 
 @Composable
 private fun formatTableSteps(steps: Int?): String {
-    return steps?.let { formatSteps(it) } ?: "—"
+    return steps?.let { formatBigSteps(it) } ?: "—"
 }
 
 private fun formatTableDistance(distance: Double?): String {

@@ -17,3 +17,15 @@ fun formatSteps(steps: Int): String {
         return steps.toString()
     }
 }
+
+@Composable
+fun formatBigSteps(steps: Int): String {
+    if (steps > 1000000) {
+        val shortStepForm = decimalFormat.format(steps.toDouble() / 1000000)
+        return stringResource(R.string.format_steps_short_form_mill, shortStepForm)
+    } else {
+        return formatSteps(steps)
+    }
+}
+
+
