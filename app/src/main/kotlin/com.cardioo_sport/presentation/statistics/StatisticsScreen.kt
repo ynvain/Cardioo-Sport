@@ -100,7 +100,7 @@ fun StatisticsScreen(
                 return@Card;
             }
             Column(
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier.padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -231,7 +231,6 @@ fun StatisticsScreen(
                         state.summary.count,
                     ),
                     style = MaterialTheme.typography.bodySmall,
-                    modifier = Modifier.padding(top = 5.dp)
                 )
 
                 StatsTable(
@@ -240,8 +239,7 @@ fun StatisticsScreen(
 
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 5.dp),
+                        .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     state.summary.walkingCount?.let {
@@ -402,12 +400,12 @@ private fun StatsRow(
         modifier = Modifier
             .fillMaxWidth()
             .then(if (isHeader) Modifier.background(headBg) else Modifier)
-            .padding(horizontal = 10.dp, vertical = 8.dp),
+            .padding(horizontal = 8.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = label,
-            modifier = Modifier.weight(1.4f),
+            modifier = Modifier.weight(1.5f),
             style = if (isHeader) MaterialTheme.typography.labelLarge else MaterialTheme.typography.bodyMedium,
         )
         Text(min, modifier = Modifier.weight(1f))
