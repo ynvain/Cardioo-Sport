@@ -91,14 +91,6 @@ fun StatisticsScreen(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         ) {
-            val latest = state.summary.latest
-            if (latest == null) {
-                Text(
-                    stringResource(R.string.statistics_no_readings),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                return@Card;
-            }
             Column(
                 modifier = Modifier.padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -174,6 +166,14 @@ fun StatisticsScreen(
                             contentDescription = stringResource(R.string.cd_export_csv)
                         )
                     }
+                }
+                val latest = state.summary.latest
+                if (latest == null) {
+                    Text(
+                        stringResource(R.string.statistics_no_readings),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    return@Card
                 }
 
                 state.summary.averageExerciseScore?.let { score ->
