@@ -45,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
 import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.domain.model.exerciseScore
+import com.cardioo_sport.presentation.util.decimalFormat
 import com.cardioo_sport.presentation.util.formatLocalizedDate
 import com.cardioo_sport.presentation.util.scoreColor
 import com.kizitonwose.calendar.compose.HorizontalCalendar
@@ -185,7 +186,7 @@ fun DayCardContent(measurement: SportMeasurement) {
                     modifier = Modifier.size(25.dp)
                 )
                 Text(
-                    text = stringResource(R.string.format_distance, it),
+                    text = stringResource(R.string.format_distance, decimalFormat.format(it)),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
@@ -202,7 +203,7 @@ fun DayCardContent(measurement: SportMeasurement) {
                     modifier = Modifier.size(25.dp)
                 )
                 Text(
-                    text = stringResource(R.string.format_distance, it),
+                    text = stringResource(R.string.format_distance, decimalFormat.format(it)),
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
