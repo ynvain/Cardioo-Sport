@@ -47,7 +47,7 @@
     <string name="label_morning_walk_steps">Утренние шаги</string>
     <string name="label_noon_walk_steps">Дневные шаги</string>
     <string name="label_running_distance">Бег (км)</string>
-    <string name="label_cycling_distance">Велоспиед (км)</string>
+    <string name="label_cycling_distance">Велосипед (км)</string>
     <string name="label_stretching">Зарядка</string>
     <string name="format_distance">%1$s км</string>
     <string name="label_notes_optional">Заметки (опционально)</string>
@@ -79,7 +79,7 @@
     <string name="range_previous_year">Прошлый год</string>
     <string name="range_year">Год</string>
     <string name="range_all_time">Всё время</string>
-    <string name="chart_metric_steps">Steps</string>
+    <string name="chart_metric_steps">Шаги</string>
     <string name="chart_metric_running_distance">Бег</string>
     <string name="chart_metric_cycling_distance">Велосипед</string>
     <string name="chart_empty_hint">Добавьте больше записей, чтобы увидеть тенденции.</string>
