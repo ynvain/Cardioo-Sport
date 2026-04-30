@@ -406,8 +406,8 @@ private fun TextLarge(text: String) {
 }
 
 private object RowProps {
-    const val dateWeight = 18F
-    const val measurementWeight = 82F
+    const val dateWeight = 21F
+    const val measurementWeight = 79F
     const val walkingWeight = 33F
     const val runningWeight = 25F
     const val cyclingWeight = 26F
