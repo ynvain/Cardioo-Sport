@@ -35,7 +35,7 @@
     <string name="menu_manage_accounts">Manage accounts</string>
     <string name="menu_edit_current_profile">Edit current profile</string>
     <string name="label_account_name">Account name</string>
-    <string name="splash_app_title">C-Sports</string>
+    <string name="splash_app_title" translatable="false">C-Sports</string>
     <string name="cd_app_logo">App logo</string>
     <string name="onboarding_welcome_title">Welcome</string>
     <string name="onboarding_subtitle">Create your account and set up your profile.</string>
@@ -52,24 +52,12 @@
     <string name="label_cycling_distance">Cycling (km)</string>
     <string name="label_stretching">Stretching</string>
     <string name="format_distance">%1$s km</string>
-    <string name="cd_toggle_weight_unit">Toggle weight unit</string>
-    <string name="bp_category_format">BP category: </string>
-    <string name="bmi_format">BMI: %1$d</string>
-    <string name="bmi_set_height_hint">BMI: Set your height in Settings.</string>
     <string name="label_notes_optional">Notes (optional)</string>
-    <string name="bp_category_hypotension">Low (hypotension)</string>
-    <string name="bp_category_normal">Normal</string>
-    <string name="bp_category_elevated">Slightly elevated</string>
-    <string name="bp_category_hypertension_stage1">Hypertension stage 1</string>
-    <string name="bp_category_hypertension_stage2">Hypertension stage 2</string>
-    <string name="bp_category_hypertensive_crisis">Hypertensive crisis</string>
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
     <string name="cd_measurement_menu">Menu</string>
     <string name="format_steps_short_form">%1$sk</string>
     <string name="format_steps_short_form_mill">%1$sM</string>
-    <string name="format_pulse_bpm">%1$d</string>
-    <string name="format_weight_with_unit">%1$s %2$s</string>
     <string name="cd_export_csv">Export CSV</string>
     <string name="statistics_no_readings">No readings yet.</string>
     <string name="statistics_avg_score">Average Score</string>
@@ -104,18 +92,10 @@
     <string name="account_current_suffix"> (current)</string>
     <string name="account_height_format">Height: %1$s %2$s</string>
     <string name="delete_account_message">Delete &quot;%1$s&quot; and all linked measurements? This cannot be undone.</string>
-    <string name="csv_header" translatable="false">timestamp,systolic,diastolic,pulse,weight,weightUnit,notes\n</string>
-    <string name="csv_default_filename" translatable="false">cardioo_readings.csv</string>
+    <string name="csv_header" translatable="false">timestamp,morningSteps,noonSteps,runningDistance,cyclingDistance,stretching,notes\n</string>
+    <string name="csv_default_filename" translatable="false">c-sports_readings.csv</string>
     <string name="error_reading_not_found">Reading not found.</string>
     <string name="error_enter_any_params">Enter at least one category</string>
-    <string name="error_enter_diastolic">Enter diastolic (30–150).</string>
-    <string name="error_systolic_range">Systolic must be 50–250.</string>
-    <string name="error_diastolic_range">Diastolic must be 30–150.</string>
-    <string name="error_pulse_invalid">Enter a valid pulse (40–200).</string>
-    <string name="error_pulse_range">Pulse must be 40–200.</string>
-    <string name="error_weight_invalid">Enter a valid weight.</string>
-    <string name="error_weight_positive">Weight must be positive.</string>
-    <string name="error_weight_unrealistic">Weight looks unrealistic.</string>
     <string name="error_account_name_required">Account name is required.</string>
     <string name="error_height_required">Height is required.</string>
     <string name="error_step_length_required">Step Length is required.</string>
