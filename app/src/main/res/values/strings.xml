@@ -79,10 +79,10 @@
         <item quantity="one">%d entry</item>
         <item quantity="other">%d entries</item>
     </plurals>
-    <plurals name="stretching_count">
-        <item quantity="one">%d stretching exercise</item>
-        <item quantity="other">%d stretching exercises</item>
-    </plurals>
+    <string name="walking_count">Walks: %1$s (%2$s km)</string>
+    <string name="running_count">Runs: %d</string>
+    <string name="cycling_count">Bike rides: %d</string>
+    <string name="stretching_count">Stretchings: %d</string>
     <string name="range_week">Week</string>
     <string name="range_month">Month</string>
     <string name="range_six_months">6 months</string>

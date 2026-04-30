@@ -8,6 +8,7 @@ import com.cardioo_sport.domain.model.SportMeasurement
 import com.cardioo_sport.domain.model.exerciseScore
 import com.cardioo_sport.domain.model.exerciseScoreCount
 import com.cardioo_sport.domain.usecase.ObserveMeasurements
+import com.cardioo_sport.domain.usecase.ObserveProfile
 import com.cardioo_sport.presentation.util.Range
 import com.cardioo_sport.presentation.util.filterByRange
 import com.cardioo_sport.presentation.util.filterPrevByRange
@@ -24,18 +25,19 @@ import javax.inject.Inject
 @HiltViewModel
 class StatisticsViewModel @Inject constructor(
     observeMeasurements: ObserveMeasurements,
+    observeProfile: ObserveProfile,
 ) : ViewModel() {
     private val range = MutableStateFlow(Range.ThisYear)
 
     val state: StateFlow<State> =
-        combine(observeMeasurements(), range) { measurements, r ->
+        combine(observeMeasurements(), observeProfile(), range) { measurements, profile, r ->
             val filtered = filterByRange(measurements, r)
             val filteredPrev =
                 filterPrevByRange(
                     measurements,
                     r
                 )
-            val summary = Summary.from(filtered, filteredPrev)
+            val summary = Summary.from(filtered, filteredPrev, profile?.stepLength ?: 1.0)
             val table = TableStats.from(filtered)
 
             val periodLabelRes = when (r) {
@@ -71,11 +73,19 @@ class StatisticsViewModel @Inject constructor(
         val averageExerciseScore: ExerciseScore? = null,
         val prevAverageExerciseScoreCount: Int? = null,
         val prevAverageExerciseScore: ExerciseScore? = null,
-        val stretchingCount: Int = 0,
+        val walkingCount: Int? = null,
+        val runningCount: Int? = null,
+        val cyclingCount: Int? = null,
+        val stretchingCount: Int? = null,
         val count: Int = 0,
+        val totalWalkingDistance: Double = 0.0
     ) {
         companion object {
-            fun from(list: List<SportMeasurement>, prevList: List<SportMeasurement>): Summary {
+            fun from(
+                list: List<SportMeasurement>,
+                prevList: List<SportMeasurement>,
+                stepLength: Double
+            ): Summary {
                 val latest = list.firstOrNull()
                 if (list.isEmpty()) return Summary(latest = null, count = 0)
                 val averageExerciseScoreCount =
@@ -88,7 +98,15 @@ class StatisticsViewModel @Inject constructor(
                         prevList.map { exerciseScoreCount(it) }.average().toInt()
                     prevAverageExerciseScore = exerciseScore(prevAverageExerciseScoreCount)
                 }
-                val stretchingCount = list.count { it.stretching }
+                val walkingCount =
+                    (list.count { it.morningSteps != null } + list.count { it.noonSteps != null }).takeIf { it != 0 }
+                val totalSteps =
+                    list.mapNotNull { it.morningSteps }.sum() + list.mapNotNull { it.noonSteps }
+                        .sum()
+                val totalWalkingDistance = (totalSteps * stepLength) / 1000
+                val runningCount = list.count { it.runningDistance != null }.takeIf { it != 0 }
+                val cyclingCount = list.count { it.cyclingDistance != null }.takeIf { it != 0 }
+                val stretchingCount = list.count { it.stretching }.takeIf { it != 0 }
 
                 return Summary(
                     latest = latest,
@@ -96,8 +114,12 @@ class StatisticsViewModel @Inject constructor(
                     averageExerciseScore = averageExerciseScore,
                     prevAverageExerciseScoreCount = prevAverageExerciseScoreCount,
                     prevAverageExerciseScore = prevAverageExerciseScore,
+                    walkingCount = walkingCount,
+                    runningCount = runningCount,
+                    cyclingCount = cyclingCount,
                     stretchingCount = stretchingCount,
                     count = list.size,
+                    totalWalkingDistance = totalWalkingDistance
                 )
             }
         }

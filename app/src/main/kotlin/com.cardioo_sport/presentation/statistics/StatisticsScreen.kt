@@ -41,9 +41,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.cardioo_sport.R
@@ -222,33 +224,102 @@ fun StatisticsScreen(
                         )
                     }
                 }
-                Box(modifier = Modifier.padding(top = 10.dp)) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Text(
-                            pluralStringResource(
-                                R.plurals.entries_count,
-                                state.summary.count,
-                                state.summary.count,
-                            ),
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                        Text(
-                            pluralStringResource(
-                                R.plurals.stretching_count,
-                                state.summary.stretchingCount,
-                                state.summary.stretchingCount,
-                            ),
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                    }
-                }
+                Text(
+                    pluralStringResource(
+                        R.plurals.entries_count,
+                        state.summary.count,
+                        state.summary.count,
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(top = 5.dp)
+                )
 
                 StatsTable(
                     table = state.table,
                 )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 5.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    state.summary.walkingCount?.let {
+                        val walkingDistance =
+                            decimalFormat.format(state.summary.totalWalkingDistance)
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_walk),
+                                contentDescription = "Walk Icon",
+                                modifier = Modifier.size(23.dp)
+                            )
+                            Text(
+                                stringResource(
+                                    R.string.walking_count, it, walkingDistance
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
+                        }
+                    }
+                    state.summary.runningCount?.let {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_run),
+                                contentDescription = "Run Icon",
+                                modifier = Modifier.size(23.dp)
+                            )
+                            Text(
+                                stringResource(
+                                    R.string.running_count, it
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
+                        }
+                    }
+                    state.summary.cyclingCount?.let {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_bike),
+                                contentDescription = "Bike Icon",
+                                modifier = Modifier.size(23.dp)
+                            )
+                            Text(
+                                stringResource(
+                                    R.string.cycling_count, it
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
+                        }
+                    }
+                    state.summary.stretchingCount?.let {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = R.drawable.c_sports_icons_stretch),
+                                contentDescription = "Stretch Icon",
+                                modifier = Modifier.size(23.dp)
+                            )
+                            Text(
+                                stringResource(
+                                    R.string.stretching_count, it
+                                ),
+                                style = MaterialTheme.typography.bodyMedium,
+                            )
+                        }
+                    }
+
+                }
             }
         }
     }
