@@ -41,10 +41,12 @@ class MeasurementEntryViewModel @Inject constructor(
         val error: Int? = null,
         val saving: Boolean = false,
     ) {
-        val morningSteps: Int? get() = morningStepsText.toIntOrNull()
-        val noonSteps: Int? get() = noonStepsText.toIntOrNull()
-        val runningDistance: Double? get() = runningDistanceText.toDoubleOrNull()
-        val cyclingDistance: Double? get() = cyclingDistanceText.toDoubleOrNull()
+        val morningSteps: Int? get() = morningStepsText.toIntOrNull()?.takeIf { it != 0 }
+        val noonSteps: Int? get() = noonStepsText.toIntOrNull()?.takeIf { it != 0 }
+        val runningDistance: Double?
+            get() = runningDistanceText.toDoubleOrNull()?.takeIf { it != 0.0 }
+        val cyclingDistance: Double?
+            get() = cyclingDistanceText.toDoubleOrNull()?.takeIf { it != 0.0 }
         val stepLength: Double get() = profile?.stepLength ?: 1.0
     }
 
