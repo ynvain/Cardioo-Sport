@@ -632,9 +632,9 @@ private fun dateTimeFormatterForRange(
         Range.ThisYear,
         Range.PreviousYear
             -> if (printYear) DateTimeFormatter.ofPattern(
-            "MMM yyyy",
+            "LLL yyyy",
             locale
-        ) else DateTimeFormatter.ofPattern("MMM", locale)
+        ) else DateTimeFormatter.ofPattern("LLL", locale)
     }
 
 private fun niceStep(range: Double, maxTicks: Int): Double {

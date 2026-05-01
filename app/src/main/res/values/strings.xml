@@ -60,8 +60,8 @@
     <string name="format_steps_short_form_mill">%1$sM</string>
     <string name="cd_export_csv">Export CSV</string>
     <string name="statistics_no_readings">No readings yet.</string>
-    <string name="statistics_avg_score">Average Score</string>
-    <string name="statistics_prev_avg_score">Previous Average</string>
+    <string name="statistics_avg_score">Average Score:</string>
+    <string name="statistics_prev_avg_score">Previous Average:</string>
     <string name="export_csv_success">Exported CSV</string>
     <string name="export_csv_failed">Export failed</string>
     <plurals name="entries_count">

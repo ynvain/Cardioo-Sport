@@ -83,7 +83,7 @@
     <string name="chart_metric_running_distance">Бег</string>
     <string name="chart_metric_cycling_distance">Велосипед</string>
     <string name="chart_empty_hint">Добавьте больше записей, чтобы увидеть тенденции.</string>
-    <string name="chart_axis_steps">Шаги</string>
+    <string name="chart_axis_steps">шаги</string>
     <string name="chart_axis_km">км</string>
     <string name="chart_axis_date">Дата</string>
     <string name="chart_legend_morning_steps">Утро</string>
