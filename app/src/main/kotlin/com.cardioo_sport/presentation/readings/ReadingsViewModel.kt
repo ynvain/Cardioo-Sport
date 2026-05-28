@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.text.get
 
 @HiltViewModel
 class ReadingsViewModel @Inject constructor(
@@ -101,7 +100,6 @@ class ReadingsViewModel @Inject constructor(
                     // On account switch we reset list state before loading data for the new account.
                     activeAccountId = accountId
                     measurements.value = emptyList()
-                    totalCount.value = 0
                     selectedIds.value = emptySet()
                     loadFirstPage()
                 }

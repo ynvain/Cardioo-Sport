@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -204,7 +204,10 @@ fun ReadingsScreen(
                 }
             }
             val selectionActive = state.selectedIds.isNotEmpty()
-            items(items = state.measurements, key = { it.id }) { m ->
+            val totalCount = state.totalCount
+            itemsIndexed(
+                items = state.measurements,
+                key = { _, measurement -> measurement.id }) { index, m ->
                 MeasurementCard(
                     measurement = m,
                     selected = m.id in state.selectedIds,
@@ -212,7 +215,8 @@ fun ReadingsScreen(
                     onEdit = { onEdit(m.id) },
                     onToggleSelect = { vm.toggleSelection(m.id) },
                     onLongPressSelect = { vm.addToSelection(m.id) },
-                    format = decimalFormat
+                    format = decimalFormat,
+                    cardNumber = totalCount - index
                 )
             }
 
@@ -260,6 +264,7 @@ private fun MeasurementCard(
     onToggleSelect: () -> Unit,
     onLongPressSelect: () -> Unit,
     format: DecimalFormat,
+    cardNumber: Int
 ) {
     val exerciseIntensity = exerciseScore(measurement)
     val currentYear = ZonedDateTime.now().year
@@ -289,6 +294,11 @@ private fun MeasurementCard(
         Row(verticalAlignment = Alignment.CenterVertically) {
             val spacing = if (year == currentYear) 4.dp else 2.dp
             val verticalPadding = if (year == currentYear) 12.dp else 5.dp
+            Text(
+                cardNumber.toString(),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
             Column(
                 modifier = Modifier
                     .padding(
